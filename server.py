@@ -103,8 +103,8 @@ def index():
 
     # Retrieve data from the database
 	select_query = "SELECT * FROM financialdata"
-	result = engine.execute(select_query)
-	financialdata = pd.read_sql(result)
+	result = g.conn.execute(select_query)
+	financialdata = pd.DataFrame(result.fetchall(), columns=result.keys())
 	sns.plot(financialdata['years'], financialdata['annualrevenue'],hue='companyid')
 
     # Save the plot to a file
