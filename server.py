@@ -101,53 +101,15 @@ def index():
 	# DEBUG: this is debugging code to see what request looks like
 	print(request.args)
 
-    # Retrieve data from the database
-	select_query = "SELECT * FROM financialdata"
-	result = g.conn.execute(select_query)
-	financialdata = pd.DataFrame(result.fetchall(), columns=result.keys())
-	sns.plot(financialdata['years'], financialdata['annualrevenue'],hue='companyid')
+	select_query = "SELECT companyname from company"
+	cursor = g.conn.execute(text(select_query))
+	names = []
+	for result in cursor:
+		names.append(result[0])
+	cursor.close()
+	context = dict(data = names)
 
-    # Save the plot to a file
-	plot_file = 'static/plot.png' # save plot to a static folder
-	plt.savefig(plot_file)
-
-    # Close the database connection
-	g.conn.close()
-
-	#
-	# Flask uses Jinja templates, which is an extension to HTML where you can
-	# pass data to a template and dynamically generate HTML based on the data
-	# (you can think of it as simple PHP)
-	# documentation: https://realpython.com/primer-on-jinja-templating/
-	#
-	# You can see an example template in templates/index.html
-	#
-	# context are the variables that are passed to the template.
-	# for example, "data" key in the context variable defined below will be 
-	# accessible as a variable in index.html:
-	#
-	#     # will print: [u'grace hopper', u'alan turing', u'ada lovelace']
-	#     <div>{{data}}</div>
-	#     
-	#     # creates a <div> tag for each element in data
-	#     # will print: 
-	#     #
-	#     #   <div>grace hopper</div>
-	#     #   <div>alan turing</div>
-	#     #   <div>ada lovelace</div>
-	#     #
-	#     {% for n in data %}
-	#     <div>{{n}}</div>
-	#     {% endfor %}
-	#
-	# context = dict(data = names)
-
-
-	#
-	# render_template looks in the templates/ folder for files.
-	# for example, the below file reads template/index.html
-	#
-	return render_template("index.html",plot_path=plot_file)
+	return render_template("index.html", **context)
 
 #
 # This is an example of a different path.  You can see it at:
