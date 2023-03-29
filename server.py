@@ -119,7 +119,7 @@ def index():
 	#
 	# example of a database query
 	#
-	select_query = "SELECT companyid from company"
+	select_query = "SELECT companyname from company"
 	cursor = g.conn.execute(text(select_query))
 	names = []
 	for result in cursor:
@@ -175,17 +175,17 @@ def another():
 
 
 # Example of adding new data to the database
-@app.route('/add', methods=['POST'])
-def add():
-	# accessing form inputs from user
-	name = request.form['name']
+# @app.route('/add', methods=['POST'])
+# def add():
+# 	# accessing form inputs from user
+# 	name = request.form['name']
 	
-	# passing params in for each variable into query
-	params = {}
-	params["new_name"] = name
-	g.conn.execute(text('INSERT INTO test(name) VALUES (:new_name)'), params)
-	g.conn.commit()
-	return redirect('/')
+# 	# passing params in for each variable into query
+# 	params = {}
+# 	params["new_name"] = name
+# 	g.conn.execute(text('INSERT INTO test(name) VALUES (:new_name)'), params)
+# 	g.conn.commit()
+# 	return redirect('/')
 
 
 @app.route('/login')
