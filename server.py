@@ -69,7 +69,10 @@ def index():
 	select_query = "SELECT companyname from company"
 	querytest = "SELECT * from FinancialData"
 	cursor = g.conn.execute(text(select_query))
-	test = pd.read_sql(querytest, con=engine)
+	
+	result_proxy = g.conn.execute(querytest)
+	test = pd.read_sql_query(querytest, g.conn)
+
 
 	sns.lineplot(data=test, x='Years', y='AnnualRevenue', hue='CompanyID')
 	plt.savefig('static/plot.png')
