@@ -13,6 +13,7 @@ import os
 from sqlalchemy import *
 from sqlalchemy.pool import NullPool
 from flask import Flask, request, render_template, g, redirect, Response
+from templates import index,another
 
 tmpl_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'templates')
 app = Flask(__name__, template_folder=tmpl_dir)
@@ -119,13 +120,13 @@ def index():
 	#
 	# database query
 	#
-	select_query = "SELECT companyname from company"
-	cursor = g.conn.execute(text(select_query))
-	names = []
-	for result in cursor:
-		names.append(result[0])
+	# select_query = "SELECT companyname from company"
+	# cursor = g.conn.execute(text(select_query))
+	# names = []
+	# for result in cursor:
+	# 	names.append(result[0])
 	
-	cursor.close()
+	# cursor.close()
 
 	#
 	# Flask uses Jinja templates, which is an extension to HTML where you can
@@ -153,14 +154,14 @@ def index():
 	#     <div>{{n}}</div>
 	#     {% endfor %}
 	#
-	context = dict(data = names)
+	# context = dict(data = names)
 
 
 	#
 	# render_template looks in the templates/ folder for files.
 	# for example, the below file reads template/index.html
 	#
-	return render_template("index.html", **context)
+	return render_template("index.html")
 
 #
 # This is an example of a different path.  You can see it at:
