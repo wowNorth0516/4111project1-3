@@ -67,24 +67,25 @@ def index():
 	print(request.args)
 
 	select_query = "SELECT companyname from company"
-	querytest = "SELECT * from FinancialData"
 	cursor = g.conn.execute(text(select_query))
-	
-	result_proxy = g.conn.execute(querytest)
-	test = pd.read_sql_query(querytest, g.conn)
 
 
-	sns.lineplot(data=test, x='Years', y='AnnualRevenue', hue='CompanyID')
-	plt.savefig('static/plot.png')
 	names = []
 	for result in cursor:
 		names.append(result[0])
 	cursor.close()
-	context = {'data': names,
-	    'plot-div-financialdata': '/static/plot.png'}
+	context = dict(data=names)
 
 	return render_template("index.html", **context)
 
+@app.route('/plot')
+def plot():
+    querytest = "SELECT * from FinancialData"
+    result_proxy = g.conn.execute(querytest)
+    df = pd.read_sql_query(querytest, g.conn)
+    sns.lineplot(data=df, x='Years', y='AnnualRevenue', hue='CompanyID')
+    plt.savefig('static/plot.png')
+    return redirect('/')
 
 # This is an example of a different path.  You can see it at:
 # 
