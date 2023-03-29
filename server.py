@@ -13,6 +13,9 @@ import os
 from sqlalchemy import *
 from sqlalchemy.pool import NullPool
 from flask import Flask, request, render_template, g, redirect, Response
+import seaborn as sns
+import matplotlib.pyplot as plt
+import pandas as pd
 
 tmpl_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'templates')
 app = Flask(__name__, template_folder=tmpl_dir)
@@ -40,23 +43,6 @@ DATABASEURI = f"postgresql://yy3262:2893@{DATABASE_HOST}/project1"
 # This line creates a database engine that knows how to connect to the URI above.
 #
 engine = create_engine(DATABASEURI)
-
-#
-# Example of running queries in your database
-# Note that this will probably not work if you already have a table named 'test' in your database, containing meaningful data. This is only an example showing you how to run queries in your database using SQLAlchemy.
-#
-with engine.connect() as conn:
-	create_table_command = """
-	CREATE TABLE IF NOT EXISTS test (
-		id serial,
-		name text
-	)
-	"""
-	res = conn.execute(text(create_table_command))
-	insert_table_command = """INSERT INTO test(name) VALUES ('grace hopper'), ('alan turing'), ('ada lovelace')"""
-	res = conn.execute(text(insert_table_command))
-	# you need to commit for create, insert, update queries to reflect
-	conn.commit()
 
 
 @app.before_request
@@ -115,17 +101,16 @@ def index():
 	# DEBUG: this is debugging code to see what request looks like
 	print(request.args)
 
+    # Retrieve data from the database
+	financialdata = pd.read_sql('SELECT * FROM financialdata', con=g.conn)
+	sns.plot(financialdata['years'], financialdata['annualrevenue'],hue='companyid')
 
-	#
-	# database query
-	#
-	# select_query = "SELECT companyname from company"
-	# cursor = g.conn.execute(text(select_query))
-	# names = []
-	# for result in cursor:
-	# 	names.append(result[0])
-	
-	# cursor.close()
+    # Save the plot to a file
+	plot_file = 'static/plot.png' # save plot to a static folder
+	plt.savefig(plot_file)
+
+    # Close the database connection
+	g.conn.close()
 
 	#
 	# Flask uses Jinja templates, which is an extension to HTML where you can
@@ -160,7 +145,7 @@ def index():
 	# render_template looks in the templates/ folder for files.
 	# for example, the below file reads template/index.html
 	#
-	return render_template("index.html")
+	return render_template("index.html",plot_path=plot_file)
 
 #
 # This is an example of a different path.  You can see it at:
