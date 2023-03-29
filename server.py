@@ -117,13 +117,14 @@ def index():
 
 
 	#
-	# example of a database query
+	# database query
 	#
 	select_query = "SELECT companyname from company"
 	cursor = g.conn.execute(text(select_query))
 	names = []
 	for result in cursor:
 		names.append(result[0])
+	
 	cursor.close()
 
 	#
