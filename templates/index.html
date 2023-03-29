@@ -1,4 +1,4 @@
-<html>
+<h<html>
   <style>
     body{ 
       font-size: 15pt;
@@ -10,8 +10,20 @@
 
 
 <body>
-  <h1>COMPANY Related DATABASE</h1>
+  <h1>Company Salary Analysis</h1>
+  <div>{{data}}</div>
+  <h1>soomthing</h1>
 
-  <p><a href="another">Salary and Satisfaction Analysis</a></p>
+  <div>
+    {% for n in data %}
+    <div>{{n}}</div>
+    {% endfor %}
+  </div>
+
+<p><a href="another">Salary and Satisfaction Analysis</a></p>
+
+
+</body>
+
 
 </html>
