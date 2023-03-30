@@ -20,16 +20,16 @@
   </div>
 
 
-<html>
-  <head>
-    <title>Financial Analysis</title>
-  </head>
-  <body>
-    <div id="plot-div-financialdata"></div>
-    <img src="tmpl_dir/plot.png" alt="Plot Image">
-  </body>
-</html>
-
+  <html>
+    <head>
+      <title>Financial Analysis</title>
+    </head>
+    <body>
+      <div id="/plot"></div>
+      <img src="{{ url_for('plot_image') }}" alt="Plot Image">
+    </body>
+  </html>
+  
 <p><a href="another">Salary and Satisfaction Analysis</a></p>
 
 

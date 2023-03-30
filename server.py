@@ -12,7 +12,7 @@ import os
   # accessible as a variable in index.html:
 from sqlalchemy import *
 from sqlalchemy.pool import NullPool
-from flask import Flask, request, render_template, g, redirect, Response
+from flask import Flask, request, render_template, g, redirect, Response,url_for,send_from_directory
 import seaborn as sns
 import matplotlib.pyplot as plt
 import pandas as pd
@@ -85,7 +85,11 @@ def plot():
     df = pd.read_sql_query(querytest, g.conn)
     sns.lineplot(data=df, x='Years', y='AnnualRevenue', hue='CompanyID')
     plt.savefig('tmpl_dir/plot.png')
-    return redirect('/')
+    return redirect(url_for('plot_image'))
+
+@app.route('/plot_image')
+def plot_image():
+    return send_from_directory('tmpl_dir', 'plot.png')
 
 # This is an example of a different path.  You can see it at:
 # 
