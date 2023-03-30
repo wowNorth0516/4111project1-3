@@ -61,7 +61,6 @@ def teardown_request(exception):
 	except Exception as e:
 		pass
 
-
 @app.route('/')
 def index():
     select_query = "SELECT companyname from company"
@@ -71,10 +70,13 @@ def index():
     for result in cursor:
         names.append(result[0])
     cursor.close()
-    
-    querytest = "SELECT * from FinancialData"
-    result_proxy = g.conn.execute(querytest)
-    financialdata = pd.read_sql_query(querytest, g.conn)
+
+    select_query = "SELECT * from FinancialData"
+    cursor = g.conn.execute(text(select_query))
+    financialdata = []
+    for result in cursor:
+        financialdata.append(result)
+    cursor.close()
 
     context = dict(data=names, financialdata=financialdata)
 
