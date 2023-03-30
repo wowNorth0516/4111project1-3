@@ -160,25 +160,25 @@ def signup():
 
 @app.route('/initial/<username>')
 def success(username):
-    select_query = "SELECT companyid, year, annualrevenue FROM FinancialData"
-    cursor = g.conn.execute(text(select_query))
+    select_query = "SELECT * from FinancialData"
+    cursorX = g.conn.execute(text(select_query))
 
-    data = defaultdict(list)
-    for row in cursor:
-        data[row[0]].append((row[1], row[2]))
+    years = []
+    revenues = []
+    for row in cursorX:
+        years.append(row[1])
+        revenues.append(row[2])
 
-    # plot annualrevenue vs years for each company
-    for companyid, company_data in data.items():
-        years = [d[0] for d in company_data]
-        revenue = [d[1] for d in company_data]
-        plt.plot(years, revenue, label=companyid)
-
+    plt.plot(years, revenues)
     plt.xlabel('Year')
     plt.ylabel('Annual Revenue')
-    plt.legend()
-    plt.show()
+    plt.title('Annual Revenue vs. Years')
 
-    return render_template('initial.html', username=username)
+    # Save the plot as a PNG image
+    plt.savefig('static/plot.png')
+
+    context = {'username': username}
+    return render_template('initial.html', **context)
 
 
 # This is an example of a different path.  You can see it at:
