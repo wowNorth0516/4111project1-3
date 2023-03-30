@@ -9,10 +9,11 @@ A debugger such as "pdb" may be helpful for debugging.
 Read about it online.
 """
 import os
+import io
   # accessible as a variable in index.html:
 from sqlalchemy import *
 from sqlalchemy.pool import NullPool
-from flask import Flask, request, render_template, g, redirect, Response,url_for,send_from_directory
+from flask import Flask, request, render_template, g, redirect, Response,url_for,send_from_directory,send_file
 import seaborn as sns
 import matplotlib.pyplot as plt
 import pandas as pd
@@ -84,8 +85,12 @@ def plot():
     result_proxy = g.conn.execute(querytest)
     df = pd.read_sql_query(querytest, g.conn)
     sns.lineplot(data=df, x='Years', y='AnnualRevenue', hue='CompanyID')
-    plt.savefig('static/plot.png')
-    return redirect(url_for('plot_image'))
+    img = io.BytesIO()
+    plt.savefig(img, format='png')
+    img.seek(0)
+    return send_file(io.BytesIO(img.getvalue()), mimetype='image/png')
+
+
 
 # This is an example of a different path.  You can see it at:
 # 
