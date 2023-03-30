@@ -20,6 +20,8 @@ import matplotlib.pyplot as plt
 import pandas as pd
 from markupsafe import escape
 import random
+from collections import defaultdict
+
 tmpl_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'templates')
 app = Flask(__name__, template_folder=tmpl_dir)
 
@@ -156,20 +158,27 @@ def signup():
     else:
         return render_template('signup.html')
 
-
-@app.route('/initial')
+@app.route('/initial/<username>')
 def success(username):
-    select_query = "SELECT companyname from company"
+    select_query = "SELECT companyid, year, annualrevenue FROM FinancialData"
     cursor = g.conn.execute(text(select_query))
 
-    names = []
-    for result in cursor:
-        names.append(result[0])
-    cursor.close()
+    data = defaultdict(list)
+    for row in cursor:
+        data[row[0]].append((row[1], row[2]))
 
-    context = dict(data=names)
-    return render_template('initial.html',**context)
+    # plot annualrevenue vs years for each company
+    for companyid, company_data in data.items():
+        years = [d[0] for d in company_data]
+        revenue = [d[1] for d in company_data]
+        plt.plot(years, revenue, label=companyid)
 
+    plt.xlabel('Year')
+    plt.ylabel('Annual Revenue')
+    plt.legend()
+    plt.show()
+
+    return render_template('initial.html', username=username)
 
 
 # This is an example of a different path.  You can see it at:

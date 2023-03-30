@@ -1,4 +1,3 @@
-<!doctype html>
 <html>
   <style>
     body{ 
@@ -7,19 +6,67 @@
       text-align: center;
     }
   </style>
-
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Company Financial Analysis</title>
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+  </head>
   <body>
     <h1>Welcome, {{ username }}!</h1>
     <p>Your login was successful.</p>
 
-    <h1>Company Salary Analysis</h1>
+    <h1>Company Financial Analysis</h1>
     <h2>Company List</h2>
 
     <div>
       {% for n in data %}
-      <div>{{n}}</div>
+        <div>{{ n }}</div>
       {% endfor %}
     </div>
+
+    <div id="plot"></div>
+
+    <script>
+      var years = [];
+      var revenues = [];
+      var categories = [];
+      var trace = {};
+
+      // Retrieve data from server
+      fetch('/financial-data')
+        .then(response => response.json())
+        .then(data => {
+          years = data.years;
+          revenues = data.revenues;
+          categories = data.categories;
+
+          // Create trace for each category
+          for (var i = 0; i < categories.length; i++) {
+            trace[i] = {
+              x: years,
+              y: revenues[i],
+              name: categories[i],
+              type: 'line'
+            };
+          }
+
+          // Create layout for the plot
+          var layout = {
+            title: 'Annual Revenue vs Year',
+            xaxis: {
+              title: 'Year'
+            },
+            yaxis: {
+              title: 'Annual Revenue'
+            }
+          };
+
+          // Plot the data
+          Plotly.newPlot('plot', Object.values(trace), layout);
+        });
+    </script>
 
     <p><a href="another">Salary and Satisfaction Analysis</a></p>
   </body>
