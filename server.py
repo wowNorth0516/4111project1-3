@@ -17,6 +17,7 @@ from flask import Flask, request, render_template, g, redirect, Response,url_for
 import seaborn as sns
 import matplotlib.pyplot as plt
 import pandas as pd
+from markupsafe import escape
 
 tmpl_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'templates')
 app = Flask(__name__, template_folder=tmpl_dir,static_folder='static')
@@ -61,8 +62,40 @@ def teardown_request(exception):
 	except Exception as e:
 		pass
 
+# @app.route('/')
+# def index():
+#     select_query = "SELECT companyname from company"
+#     cursor = g.conn.execute(text(select_query))
+
+#     names = []
+#     for result in cursor:
+#         names.append(result[0])
+#     cursor.close()
+
+#     context = dict(data=names)
+
+#     return render_template("index.html", **context)
+
+    # querytest = "SELECT * from FinancialData"
+    # result_proxy = g.conn.execute(querytest)
+    # rows = result_proxy.fetchall()
+    # columns = result_proxy.keys()
+    # financialdata = pd.DataFrame(rows, columns=columns)
+    # cursor.close()
+
 @app.route('/')
 def index():
+    return render_template('index.html')
+
+@app.route('/login', methods=['POST'])
+def login():
+    username = escape(request.form['username'])
+    password = escape(request.form['password'])
+    # Redirect to the success page
+    return redirect(url_for('success', username=username,**context))
+
+@app.route('/success/<username>')
+def success(username):
     select_query = "SELECT companyname from company"
     cursor = g.conn.execute(text(select_query))
 
@@ -72,15 +105,7 @@ def index():
     cursor.close()
 
     context = dict(data=names)
-
-    return render_template("index.html", **context)
-
-    # querytest = "SELECT * from FinancialData"
-    # result_proxy = g.conn.execute(querytest)
-    # rows = result_proxy.fetchall()
-    # columns = result_proxy.keys()
-    # financialdata = pd.DataFrame(rows, columns=columns)
-    # cursor.close()
+    return render_template('success.html', username=username)
 
 # This is an example of a different path.  You can see it at:
 # 
