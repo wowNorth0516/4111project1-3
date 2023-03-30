@@ -79,14 +79,12 @@ def index():
 
 	return render_template("index.html", **context)
 
-@app.route('/plot')
-def plot():
+@app.route('/financialdata')
+def financialdata_read():
     querytest = "SELECT * from FinancialData"
     result_proxy = g.conn.execute(querytest)
-    df = pd.read_sql_query(querytest, g.conn)
-    sns.lineplot(data=df, x='Years', y='AnnualRevenue', hue='CompanyID')
-    plt.savefig('static/plot.png')
-    return render_template('index.html')
+    financialdata = pd.read_sql_query(querytest, g.conn)
+    return render_template("financialdata.html", financialdata=financialdata.to_html())
 
 
 

@@ -20,8 +20,18 @@
   </div>
 
 
-  <img src="{{ url_for('static', filename='plot.png') }}" alt="Plot Image">
-  
+  <!DOCTYPE html>
+  <html>
+    <head>
+      <title>Financial Data</title>
+    </head>
+    <body>
+      <table>
+        {{ financialdata|safe }}
+      </table>
+    </body>
+  </html>
+    
   
 <p><a href="another">Salary and Satisfaction Analysis</a></p>
 
