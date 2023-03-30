@@ -84,7 +84,7 @@ def signup():
         
         # Check if user already exists
         select_query = "SELECT * FROM User WHERE userid = :userid"
-        cursor = engine.execute(text(select_query), userid=username)
+        cursor = g.conn.execute(text(select_query), userid=username)
         result = cursor.fetchone()
         cursor.close()
         if result:
@@ -94,14 +94,14 @@ def signup():
         if is_employee == 'Yes':
             employee_id = request.form['employee_id']
             select_query = "SELECT * FROM employee WHERE employeeid = :employeeid"
-            cursor = engine.execute(text(select_query), employeeid=employee_id)
+            cursor = g.conn.execute(text(select_query), employeeid=employee_id)
             result = cursor.fetchone()
             cursor.close()
             if result:
                 # Insert to staff table
                 insert_query = "INSERT INTO Staff (userid, employeeid) \
                                 VALUES (:userid, :employeeid)"
-                engine.execute(text(insert_query), userid=username, employeeid=employee_id)
+                g.conn.execute(text(insert_query), userid=username, employeeid=employee_id)
                 return redirect(url_for('login'))
             else:
                 error_msg = "Invalid employee ID, please check and try again."
@@ -116,12 +116,12 @@ def signup():
             # Insert to jobseeker table
             insert_query = "INSERT INTO jobseeker (userid, jobseekerid, age, gender, desiredposition, desiredsalary) \
                             VALUES (:userid, :jobseekerid, :age, :gender, :desiredposition, :desiredsalary)"
-            engine.execute(text(insert_query), userid=username, jobseekerid=jobseeker_id, age=age, gender=gender, 
+            g.conn.execute(text(insert_query), userid=username, jobseekerid=jobseeker_id, age=age, gender=gender, 
                             desiredposition=desiredposition, desiredsalary=desiredsalary)
             # Insert to user table
             insert_query = "INSERT INTO User (userid, userpsw) \
                             VALUES (:userid, :password)"
-            engine.execute(text(insert_query), userid=username, password=password)
+            g.conn.execute(text(insert_query), userid=username, password=password)
             
             return redirect(url_for('login'))
         
