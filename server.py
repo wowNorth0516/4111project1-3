@@ -92,6 +92,11 @@ def do_login():
         cursor.close()
         return redirect(url_for('initial', username=username))
 
+@app.route('/initial/<username>')
+def initial(username):
+    # do something
+    return render_template('initial.html', username=username)
+
 
 @app.route('/signup', methods=['GET', 'POST'])
 def signup():
