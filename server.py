@@ -71,6 +71,14 @@ def index():
 def do_login():
     username = escape(request.form['username'])
     password = escape(request.form['password'])
+    # Check if user already exists
+    select_query = "SELECT * FROM User WHERE userid = :userid"
+    cursor = g.conn.execute(text(select_query), userid=username)
+    result = cursor.fetchone()
+    cursor.close()
+    if not result:
+        error_msg = "Username already exists, please log in or choose a different username."
+        return render_template('login.html', error_msg=error_msg)
     # Redirect to the success page
     return redirect(url_for('initial', username=username))
 
