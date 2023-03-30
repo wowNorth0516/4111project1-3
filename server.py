@@ -67,7 +67,7 @@ def teardown_request(exception):
 def index():
     return render_template('login.html')
 
-@app.route('/login', methods=['POST'])
+@app.route('/do_login', methods=['POST'])
 def do_login():
     username = escape(request.form['username'])
     password = escape(request.form['password'])
