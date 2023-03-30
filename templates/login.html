@@ -1,0 +1,31 @@
+<h<html>
+  <style>
+    body{ 
+      font-size: 15pt;
+      font-family: arial;
+      text-align: center;
+
+    }
+  </style>
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Company DATABASE Login</title>
+  </head>
+  <body>
+    <h1>Login</h1>
+    <form action="{{ url_for('do_login') }}" method="post">
+      <label for="username">Username:</label>
+      <input type="text" id="username" name="username"><br><br>
+      <label for="password">Password:</label>
+      <input type="password" id="password" name="password"><br><br>
+      <input type="submit" value="Login">
+    </form>
+    <br>
+    <form action="{{ url_for('signup') }}" method="get">
+      <input type="submit" value="New user? Sign up">
+    </form>
+  </body>
+</html>
+
+  

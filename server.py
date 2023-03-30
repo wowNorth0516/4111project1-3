@@ -62,39 +62,19 @@ def teardown_request(exception):
 	except Exception as e:
 		pass
 
-# @app.route('/')
-# def index():
-#     select_query = "SELECT companyname from company"
-#     cursor = g.conn.execute(text(select_query))
-
-#     names = []
-#     for result in cursor:
-#         names.append(result[0])
-#     cursor.close()
-
-#     context = dict(data=names)
-
-#     return render_template("index.html", **context)
-
-    # querytest = "SELECT * from FinancialData"
-    # result_proxy = g.conn.execute(querytest)
-    # rows = result_proxy.fetchall()
-    # columns = result_proxy.keys()
-    # financialdata = pd.DataFrame(rows, columns=columns)
-    # cursor.close()
 
 @app.route('/')
 def index():
-    return render_template('index.html')
+    return render_template('login.html')
 
 @app.route('/do_login', methods=['POST'])
 def do_login():
     username = escape(request.form['username'])
     password = escape(request.form['password'])
     # Redirect to the success page
-    return redirect(url_for('success', username=username))
+    return redirect(url_for('initial', username=username))
 
-@app.route('/success/<username>')
+@app.route('/initial/<username>')
 def success(username):
     select_query = "SELECT companyname from company"
     cursor = g.conn.execute(text(select_query))
@@ -105,7 +85,8 @@ def success(username):
     cursor.close()
 
     context = dict(data=names)
-    return render_template('success.html', username=username, **context)
+    return render_template('initial.html', username=username, **context)
+
 
 
 # This is an example of a different path.  You can see it at:
