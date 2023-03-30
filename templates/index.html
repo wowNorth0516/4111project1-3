@@ -19,19 +19,22 @@
     {% endfor %}
   </div> -->
 
-<!doctype html>
+  <!doctype html>
   <html>
+    <head>
+      <title>Login</title>
+    </head>
     <body>
-      <form action="/login" method="post">
+      <h1>Login</h1>
+      <form action="{{ url_for('do_login') }}" method="post">
         <label for="username">Username:</label>
-        <input type="text" id="username" name="username"><br>
+        <input type="text" id="username" name="username"><br><br>
         <label for="password">Password:</label>
-        <input type="password" id="password" name="password"><br>
+        <input type="password" id="password" name="password"><br><br>
         <input type="submit" value="Submit">
       </form>
     </body>
   </html>
-  
   
 <!-- <p><a href="another">Salary and Satisfaction Analysis</a></p>
 

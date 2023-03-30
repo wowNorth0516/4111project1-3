@@ -87,12 +87,12 @@ def teardown_request(exception):
 def index():
     return render_template('index.html')
 
-@app.route('/login', methods=['POST'])
-def login():
+@app.route('/do_login', methods=['POST'])
+def do_login():
     username = escape(request.form['username'])
     password = escape(request.form['password'])
     # Redirect to the success page
-    return redirect(url_for('success', username=username,**context))
+    return redirect(url_for('success', username=username))
 
 @app.route('/success/<username>')
 def success(username):
@@ -105,7 +105,8 @@ def success(username):
     cursor.close()
 
     context = dict(data=names)
-    return render_template('success.html', username=username)
+    return render_template('success.html', username=username, **context)
+
 
 # This is an example of a different path.  You can see it at:
 # 
