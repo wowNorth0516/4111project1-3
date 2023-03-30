@@ -11,6 +11,7 @@ Read about it online.
 
 import os
 import io
+import base64
   # accessible as a variable in index.html:
 from sqlalchemy import *
 from sqlalchemy.pool import NullPool
@@ -158,7 +159,6 @@ def signup():
     else:
         return render_template('signup.html')
 
-
 @app.route('/initial/<username>')
 def success(username):
     select_query = "SELECT * from FinancialData"
@@ -180,12 +180,16 @@ def success(username):
     ax.set_xlabel('Years')
     ax.set_ylabel('Annual Revenue')
 
-    # Save the plot to a file
-    fig.savefig('static/plot.png')
+    # Save the plot to a buffer
+    buffer = io.BytesIO()
+    fig.savefig(buffer, format='png')
+    buffer.seek(0)
 
-    context = {'username': username, 'plot_url': 'static/plot.png'}
+    # Encode the buffer in base64 format
+    plot_data = base64.b64encode(buffer.getvalue()).decode()
+
+    context = {'username': username, 'plot_data': plot_data}
     return render_template('initial.html', **context)
-
 
 # This is an example of a different path.  You can see it at:
 # 
