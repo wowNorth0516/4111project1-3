@@ -19,19 +19,18 @@
     {% endfor %}
   </div>
 
-
-  <!DOCTYPE html>
-  <html>
-    <head>
-      <title>Financial Data</title>
-    </head>
-    <body>
-      <table>
-        {{ financialdata|safe }}
-      </table>
-    </body>
-  </html>
-    
+  <body>
+    <table>
+      {% for row in financialdata.iterrows() %}
+      <tr>
+      {% for col in financialdata.columns %}
+          <td>{{ row[col] }}</td>
+      {% endfor %}
+      </tr>
+      {% endfor %}
+    </table>
+  </body>
+  
   
 <p><a href="another">Salary and Satisfaction Analysis</a></p>
 

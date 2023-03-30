@@ -61,31 +61,24 @@ def teardown_request(exception):
 	except Exception as e:
 		pass
 
+
 @app.route('/')
 def index():
+    select_query = "SELECT companyname from company"
+    cursor = g.conn.execute(text(select_query))
 
-	# DEBUG: this is debugging code to see what request looks like
-	print(request.args)
-
-	select_query = "SELECT companyname from company"
-	cursor = g.conn.execute(text(select_query))
-
-
-	names = []
-	for result in cursor:
-		names.append(result[0])
-	cursor.close()
-	context = dict(data=names)
-
-	return render_template("index.html", **context)
-
-@app.route('/financialdata')
-def financialdata_read():
+    names = []
+    for result in cursor:
+        names.append(result[0])
+    cursor.close()
+    
     querytest = "SELECT * from FinancialData"
     result_proxy = g.conn.execute(querytest)
     financialdata = pd.read_sql_query(querytest, g.conn)
-    return render_template("financialdata.html", financialdata=financialdata.to_html())
 
+    context = dict(data=names, financialdata=financialdata)
+
+    return render_template("index.html", **context)
 
 
 # This is an example of a different path.  You can see it at:
