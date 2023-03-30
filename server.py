@@ -225,3 +225,30 @@ if __name__ == "__main__":
 		app.run(host=HOST, port=PORT, debug=True, threaded=threaded)
 
 run()
+# smx code
+@app.route('/search')
+def search():
+    return render_template('search.html')
+from flask import request
+
+@app.route('/search_results')
+def search_results():
+    query = request.args.get('query')
+    
+    # Simulate searching for companies based on the query
+    companies = [
+        {"id": "c1", "name": "Company 1"},
+        {"id": "c2", "name": "Company 2"},
+        {"id": "c3", "name": "Company 3"},
+    ]
+    
+    # In a real application, you would search the database for companies
+    # matching the search query and return the results.
+    
+    return render_template('search_results.html', query=query, companies=companies)
+
+@app.route('/company/<string:company_id>')
+def company_details(company_id):
+    # In a real application, you would fetch the company details from the database
+    # using the company_id and render a template with the company information.
+    return f"Company details for company ID: {company_id}"
