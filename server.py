@@ -20,13 +20,13 @@ import pandas as pd
 from markupsafe import escape
 import random
 tmpl_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'templates')
-app = Flask(__name__, template_folder=tmpl_dir,static_folder='static')
+app = Flask(__name__, template_folder=tmpl_dir)
 
 
-DATABASE_USERNAME = ""
-DATABASE_PASSWRD = ""
+DATABASE_USERNAME = "yy3262"
+DATABASE_PASSWRD = "2893"
 DATABASE_HOST = "34.148.107.47" # change to 34.28.53.86 if you used database 2 for part 2
-DATABASEURI = f"postgresql://yy3262:2893@{DATABASE_HOST}/project1"
+DATABASEURI = f"postgresql://{DATABASE_USERNAME}:{DATABASE_PASSWRD}@{DATABASE_HOST}/project1"
 
 
 #
