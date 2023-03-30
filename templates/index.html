@@ -19,8 +19,17 @@
     {% endfor %}
   </div>
 
-  <a href="/plot">Generate Plot</a>
-
+<!doctype html>
+  <html>
+    <head>
+      <title>Financial Analysis</title>
+    </head>
+    <body>
+      <h1>Plot</h1>
+      <div id="plot-div-financialdata"></div>
+      <img src="{{ url_for('static', filename='plot.png') }}" alt="Plot Image">
+    </body>
+  </html>
 
 <p><a href="another">Salary and Satisfaction Analysis</a></p>
 
