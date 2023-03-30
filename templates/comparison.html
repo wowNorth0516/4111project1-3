@@ -1,0 +1,25 @@
+<!-- comparison.html -->
+{% if compare_option == 'salary' %}
+  <table>
+    <tr>
+      <th>Your Salary</th>
+      <th>Company Average Salary</th>
+    </tr>
+    <tr>
+      <td>{{ user_data.salary }}</td>
+      <td>{{ company_data|map(attribute='salary')|sum // company_data|length }}</td>
+    </tr>
+  </table>
+{% elif compare_option == 'age' %}
+  <table>
+    <tr>
+      <th>Your Age</th>
+      <th>Company Average Age</th>
+    </tr>
+    <tr>
+      <td>{{ user_data.age }}</td>
+      <td>{{ company_data|map(attribute='age')|sum // company_data|length }}</td>
+    </tr>
+  </table>
+{% endif %}
+<!-- Add more tables for other compare options here -->
