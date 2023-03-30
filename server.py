@@ -69,26 +69,32 @@ def index():
 
 @app.route('/do_login', methods=['POST'])
 def do_login():
+    # get input values from form
     username = escape(request.form['username'])
     password = escape(request.form['password'])
-    # Check if user already exists
+
+    # check if user exists in database
     select_query = "SELECT * FROM User WHERE userid = :userid"
     cursor = g.conn.execute(text(select_query), userid=username)
     result = cursor.fetchone()
     cursor.close()
+
     if not result:
-        error_msg = "Username already exists, please log in or choose a different username."
+        # user does not exist, display error message
+        error_msg = "Username does not exist, please sign up or enter a valid username."
         return render_template('login.html', error_msg=error_msg)
-    # Redirect to the success page
-    return redirect(url_for('initial', username=username))
+
+    # redirect to success page
+    else:
+        return redirect(url_for('initial', username=username))
 
 
 @app.route('/signup', methods=['GET', 'POST'])
 def signup():
     if request.method == 'POST':
-        username = request.form['username']
-        password = request.form['password']
-        is_employee = request.form.get('is_employee')
+        username = escape(request.form['username'])
+        password = escape(request.form['password'])
+        is_employee = escape(request.form.get('is_employee'))
         
         # Check if user already exists
         select_query = "SELECT * FROM User WHERE userid = :userid"
@@ -100,7 +106,7 @@ def signup():
             return render_template('signup.html', error_msg=error_msg)
         
         if is_employee == 'Yes':
-            employee_id = request.form['employee_id']
+            employee_id = escape(request.form['employee_id'])
             select_query = "SELECT * FROM employee WHERE employeeid = :employeeid"
             cursor = g.conn.execute(text(select_query), employeeid=employee_id)
             result = cursor.fetchone()
@@ -115,10 +121,10 @@ def signup():
                 error_msg = "Invalid employee ID, please check and try again."
                 return render_template('signup.html', error_msg=error_msg)
         else:
-            age = request.form['age']
-            gender = request.form['gender']
-            desiredposition = request.form['desiredposition']
-            desiredsalary = request.form['desiredsalary']
+            age = escape(request.form['age'])
+            gender = escape(request.form['gender'])
+            desiredposition = escape(request.form['desiredposition'])
+            desiredsalary = escape(request.form['desiredsalary'])
             # Generate random jobseeker ID
             jobseeker_id = 'JS' + str(random.randint(10000, 99999))
             # Insert to jobseeker table
