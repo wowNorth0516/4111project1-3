@@ -17,6 +17,8 @@ from sqlalchemy import *
 from sqlalchemy.pool import NullPool
 from flask import Flask, request, render_template, g, redirect, Response,url_for,send_from_directory,send_file
 import seaborn as sns
+import matplotlib
+matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 import pandas as pd
 from markupsafe import escape
@@ -171,10 +173,7 @@ def success(username):
     company_ids = sorted(set([row[0] for row in data]))
     years = sorted(set([row[1] for row in data]))
     revenue_data = {company_id: [row[2] for row in data if row[0] == company_id] for company_id in company_ids}
-    print(company_ids)
-    print(revenue_data)
-    print(years)
-    
+
     # Create the plot
     fig, ax = plt.subplots()
     for company_id in company_ids:
