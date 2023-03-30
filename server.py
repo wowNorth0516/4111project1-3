@@ -84,12 +84,8 @@ def plot():
     result_proxy = g.conn.execute(querytest)
     df = pd.read_sql_query(querytest, g.conn)
     sns.lineplot(data=df, x='Years', y='AnnualRevenue', hue='CompanyID')
-    plt.savefig('tmpl_dir/plot.png')
+    plt.savefig('static/plot.png')
     return redirect(url_for('plot_image'))
-
-@app.route('/plot_image')
-def plot_image():
-    return send_from_directory('tmpl_dir', 'plot.png')
 
 # This is an example of a different path.  You can see it at:
 # 
