@@ -71,17 +71,16 @@ def index():
         names.append(result[0])
     cursor.close()
 
-    querytest = "SELECT * from FinancialData"
-    result_proxy = g.conn.execute(querytest)
-    rows = result_proxy.fetchall()
-    columns = result_proxy.keys()
-    financialdata = pd.DataFrame(rows, columns=columns)
-    cursor.close()
-
-    context = dict(data=names, financialdata=financialdata)
+    context = dict(data=names)
 
     return render_template("index.html", **context)
 
+    # querytest = "SELECT * from FinancialData"
+    # result_proxy = g.conn.execute(querytest)
+    # rows = result_proxy.fetchall()
+    # columns = result_proxy.keys()
+    # financialdata = pd.DataFrame(rows, columns=columns)
+    # cursor.close()
 
 # This is an example of a different path.  You can see it at:
 # 

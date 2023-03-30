@@ -19,25 +19,7 @@
     {% endfor %}
   </div>
 
-  <table>
-    <thead>
-      <tr>
-        <th>Company ID</th>
-        <th>Years</th>
-        <th>Annual Revenue</th>
-      </tr>
-    </thead>
-    <tbody>
-      {% for index, row in financialdata.iterrows() %}
-      <tr>
-        <td>{{ row['CompanyID'] }}</td>
-        <td>{{ row['Years'] }}</td>
-        <td>{{ row['AnnualRevenue'] }}</td>
-      </tr>
-      {% endfor %}
-    </tbody>
-  </table>
-  
+
   
 <p><a href="another">Salary and Satisfaction Analysis</a></p>
 
