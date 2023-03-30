@@ -84,7 +84,7 @@ def plot():
     result_proxy = g.conn.execute(querytest)
     df = pd.read_sql_query(querytest, g.conn)
     sns.lineplot(data=df, x='Years', y='AnnualRevenue', hue='CompanyID')
-    plt.savefig('static/plot.png')
+    plt.savefig('tmpl_dir/plot.png')
     return redirect('/')
 
 # This is an example of a different path.  You can see it at:
@@ -142,6 +142,6 @@ if __name__ == "__main__":
 
 		HOST, PORT = host, port
 		print("running on %s:%d" % (HOST, PORT))
-		app.run(host=HOST, port=PORT, debug=debug, threaded=threaded)
+		app.run(host=HOST, port=PORT, debug=True, threaded=threaded)
 
 run()
