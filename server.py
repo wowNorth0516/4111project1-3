@@ -90,7 +90,12 @@ def do_login():
         cursor = g.conn.execute(text(select_query), {'UserID': username,'UserPSW': password})
         result = cursor.fetchone()
         cursor.close()
-        return redirect(url_for('initial', username=username))
+        if not result:
+			#inccorect password, display error message
+            error_msg = "Incorrect password, please try again."
+            return render_template('login.html', error_msg=error_msg)
+        else:
+            return redirect(url_for('initial', username=username))
 
 @app.route('/initial/<username>')
 def initial(username):
@@ -107,7 +112,7 @@ def signup():
         
         # Check if user already exists
         select_query = "SELECT * FROM Users WHERE UserID = :UserID"
-        cursor = g.conn.execute(text(select_query), UserID=username)
+        cursor = g.conn.execute(text(select_query), {'UserID': username})
         result = cursor.fetchone()
         cursor.close()
         if result:
@@ -117,14 +122,14 @@ def signup():
         if is_employee == 'Yes':
             EmployeeID = escape(request.form['EmployeeID'])
             select_query = "SELECT * FROM Employee WHERE EmployeeID = :EmployeeID"
-            cursor = g.conn.execute(text(select_query), EmployeeID=EmployeeID)
+            cursor = g.conn.execute(text(select_query), {'EmployeeID':EmployeeID})
             result = cursor.fetchone()
             cursor.close()
             if result:
                 # Insert to staff table
                 insert_query = "INSERT INTO Staff (UserID, EmployeeID) \
                                 VALUES (:UserID, :EmployeeID)"
-                g.conn.execute(text(insert_query), UserID=username, EmployeeID=EmployeeID)
+                g.conn.execute(text(insert_query), {'UserID': username,'EmployeeID':EmployeeID})
                 return redirect(url_for('login'))
             else:
                 error_msg = "Invalid employee ID, please check and try again."
@@ -139,12 +144,12 @@ def signup():
             # Insert to jobseeker table
             insert_query = "INSERT INTO JobSeeker (UserID, JobSeekerID, Age, gender, DesiredPosition, DesiredSalary) \
                             VALUES (:UserID, :JobSeekerID, :Age, :Gender, :DesiredPosition, :DesiredSalary)"
-            g.conn.execute(text(insert_query), UserID=username, JobSeekerID=JobSeekerID, Age=Age, Gender=Gender, 
-                            DesiredPosition=DesiredPosition, DesiredSalary=DesiredSalary)
+            g.conn.execute(text(insert_query), {'UserID':username, 'JobSeekerID':JobSeekerID, 'Age':Age, 'Gender':Gender, 
+                            'DesiredPosition':DesiredPosition, 'DesiredSalary':DesiredSalary})
             # Insert to user table
             insert_query = "INSERT INTO Users (UserID, UserPSW) \
                             VALUES (:UserID, :password)"
-            g.conn.execute(text(insert_query), UserID=username, UserPSW=password)
+            g.conn.execute(text(insert_query),{'UserID': username,'UserPSW': password})
             
             return redirect(url_for('login'))
         
