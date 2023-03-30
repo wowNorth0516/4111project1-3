@@ -1,4 +1,5 @@
-<!doctype html>
+
+<!DOCTYPE html>
 <html>
   <style>
     body{ 
@@ -7,18 +8,28 @@
       text-align: center;
     }
   </style>
-
-  <body>
+<head>
+    <title>Financial Data</title>
+</head>
+<body>
     <h1>Welcome, {{ username }}!</h1>
-    <p>Your login was successful.</p>
-
-    <h1>Company Financial Analysis</h1>
-    <h2>Annual Revenue vs. Years</h2>
-
-    <div>
-      <img src="data:image/png;base64,{{ plot_data }}" />
-    </div>
-
-    <p><a href="another">Salary and Satisfaction Analysis</a></p>
-  </body>
+    <table>
+        <thead>
+            <tr>
+                <th>Company ID</th>
+                <th>Year</th>
+                <th>Annual Revenue</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for row in data %}
+            <tr>
+                <td>{{ row[0] }}</td>
+                <td>{{ row[1] }}</td>
+                <td>{{ row[2] }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</body>
 </html>

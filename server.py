@@ -169,29 +169,7 @@ def success(username):
     # Retrieve the data from the cursor
     data = cursorX.fetchall()
 
-    # Prepare the data for plotting
-    company_ids = sorted(set([row[0] for row in data]))
-    years = sorted(set([row[1] for row in data]))
-    revenue_data = {company_id: [row[2] for row in data if row[0] == company_id] for company_id in company_ids}
-
-    # Create the plot
-    fig, ax = plt.subplots()
-    for company_id in company_ids:
-        ax.plot(years, revenue_data[company_id], label=company_id)
-    ax.legend()
-    ax.set_xlabel('Years')
-    ax.set_ylabel('Annual Revenue')
-
-    # Save the plot to a buffer
-    buffer = io.BytesIO()
-    fig.savefig(buffer, format='png')
-    buffer.seek(0)
-
-    # Encode the buffer in base64 format
-    plot_data = base64.b64encode(buffer.getvalue()).decode()
-
-    context = {'username': username, 'plot_data': plot_data}
-    return render_template('initial.html', **context)
+    return render_template('initial.html', data=data, username=username)
 
 # This is an example of a different path.  You can see it at:
 # 
