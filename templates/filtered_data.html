@@ -1,0 +1,30 @@
+<!-- filtered_data.html -->
+{% if filter_option == 'departments' %}
+  <table>
+    <tr>
+      <th>Department ID</th>
+      <th>Department Name</th>
+      <!-- Add more column headers here -->
+    </tr>
+    {% for row in filtered_data %}
+      <tr>
+        <td>{{ row.departmentid }}</td>
+        <td>{{ row.departmentname }}</td>
+        <!-- Add more columns here -->
+      </tr>
+    {% endfor %}
+  </table>
+{% elif filter_option == 'positions' %}
+  <table>
+    <tr>
+      <th>Position</th>
+    </tr>
+    {% for row in filtered_data %}
+      <tr>
+        <td>{{ row.currentposition }}</td>
+      </tr>
+    {% endfor %}
+  </table>
+{% endif %}
+<!-- Add more tables for other filter options here -->
+
