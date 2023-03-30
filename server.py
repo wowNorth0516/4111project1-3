@@ -169,7 +169,8 @@ def success(username):
     # Retrieve the data from the cursor
     data = cursorX.fetchall()
 
-    return render_template('initial.html', data=data, username=username)
+    context = {'username': username, 'data': data}
+    return render_template('initial.html', **context)
 
 # This is an example of a different path.  You can see it at:
 # 

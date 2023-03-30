@@ -1,35 +1,33 @@
 
+
 <!DOCTYPE html>
 <html>
-  <style>
-    body{ 
-      font-size: 15pt;
-      font-family: arial;
-      text-align: center;
-    }
-  </style>
 <head>
+    <style>
+      body{ 
+        font-size: 15pt;
+        font-family: arial;
+        text-align: center;
+      }
+    </style>
+    <meta charset="utf-8">
     <title>Financial Data</title>
 </head>
 <body>
     <h1>Welcome, {{ username }}!</h1>
     <table>
-        <thead>
-            <tr>
-                <th>Company ID</th>
-                <th>Year</th>
-                <th>Annual Revenue</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for row in data %}
-            <tr>
-                <td>{{ row[0] }}</td>
-                <td>{{ row[1] }}</td>
-                <td>{{ row[2] }}</td>
-            </tr>
-            {% endfor %}
-        </tbody>
+        <tr>
+            <th>Company ID</th>
+            <th>Year</th>
+            <th>Annual Revenue</th>
+        </tr>
+        {% for row in data %}
+        <tr>
+            <td>{{ row[0] }}</td>
+            <td>{{ row[1] }}</td>
+            <td>{{ row[2] }}</td>
+        </tr>
+        {% endfor %}
     </table>
 </body>
 </html>
