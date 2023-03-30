@@ -158,26 +158,32 @@ def signup():
     else:
         return render_template('signup.html')
 
+
 @app.route('/initial/<username>')
 def success(username):
     select_query = "SELECT * from FinancialData"
     cursorX = g.conn.execute(text(select_query))
 
-    years = []
-    revenues = []
-    for row in cursorX:
-        years.append(row[1])
-        revenues.append(row[2])
+    # Retrieve the data from the cursor
+    data = cursorX.fetchall()
 
-    plt.plot(years, revenues)
-    plt.xlabel('Year')
-    plt.ylabel('Annual Revenue')
-    plt.title('Annual Revenue vs. Years')
+    # Prepare the data for plotting
+    company_ids = sorted(set([row[0] for row in data]))
+    years = sorted(set([row[1] for row in data]))
+    revenue_data = {company_id: [row[2] for row in data if row[0] == company_id] for company_id in company_ids}
 
-    # Save the plot as a PNG image
-    plt.savefig('static/plot.png')
+    # Create the plot
+    fig, ax = plt.subplots()
+    for company_id in company_ids:
+        ax.plot(years, revenue_data[company_id], label=company_id)
+    ax.legend()
+    ax.set_xlabel('Years')
+    ax.set_ylabel('Annual Revenue')
 
-    context = {'username': username}
+    # Save the plot to a file
+    fig.savefig('static/plot.png')
+
+    context = {'username': username, 'plot_url': 'static/plot.png'}
     return render_template('initial.html', **context)
 
 
