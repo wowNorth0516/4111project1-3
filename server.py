@@ -64,7 +64,7 @@ def teardown_request(exception):
 
 
 @app.route('/')
-def index():
+def do_login():
     return render_template('login.html')
 
 @app.route('/do_login', methods=['POST'])
