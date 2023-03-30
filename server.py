@@ -18,7 +18,7 @@ import seaborn as sns
 import matplotlib.pyplot as plt
 import pandas as pd
 from markupsafe import escape
-
+import random
 tmpl_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'templates')
 app = Flask(__name__, template_folder=tmpl_dir,static_folder='static')
 
@@ -63,16 +63,68 @@ def teardown_request(exception):
 		pass
 
 
-@app.route('/login')
-def do_login():
-    return render_template('login.html')
-
 @app.route('/do_login', methods=['POST'])
 def do_login():
     username = escape(request.form['username'])
     password = escape(request.form['password'])
     # Redirect to the success page
     return redirect(url_for('initial', username=username))
+
+import random
+
+@app.route('/signup', methods=['GET', 'POST'])
+def signup():
+    if request.method == 'POST':
+        username = request.form['username']
+        password = request.form['password']
+        is_employee = request.form.get('is_employee')
+        
+        # Check if user already exists
+        select_query = "SELECT * FROM User WHERE userid = :userid"
+        cursor = engine.execute(text(select_query), userid=username)
+        result = cursor.fetchone()
+        cursor.close()
+        if result:
+            error_msg = "Username already exists, please log in or choose a different username."
+            return render_template('signup.html', error_msg=error_msg)
+        
+        if is_employee == 'Yes':
+            employee_id = request.form['employee_id']
+            select_query = "SELECT * FROM employee WHERE employeeid = :employeeid"
+            cursor = engine.execute(text(select_query), employeeid=employee_id)
+            result = cursor.fetchone()
+            cursor.close()
+            if result:
+                # Insert to staff table
+                insert_query = "INSERT INTO Staff (userid, employeeid) \
+                                VALUES (:userid, :employeeid)"
+                engine.execute(text(insert_query), userid=username, employeeid=employee_id)
+                return redirect(url_for('login'))
+            else:
+                error_msg = "Invalid employee ID, please check and try again."
+                return render_template('signup.html', error_msg=error_msg)
+        else:
+            age = request.form['age']
+            gender = request.form['gender']
+            desiredposition = request.form['desiredposition']
+            desiredsalary = request.form['desiredsalary']
+            # Generate random jobseeker ID
+            jobseeker_id = 'JS' + str(random.randint(10000, 99999))
+            # Insert to jobseeker table
+            insert_query = "INSERT INTO jobseeker (userid, jobseekerid, age, gender, desiredposition, desiredsalary) \
+                            VALUES (:userid, :jobseekerid, :age, :gender, :desiredposition, :desiredsalary)"
+            engine.execute(text(insert_query), userid=username, jobseekerid=jobseeker_id, age=age, gender=gender, 
+                            desiredposition=desiredposition, desiredsalary=desiredsalary)
+            # Insert to user table
+            insert_query = "INSERT INTO User (userid, userpsw) \
+                            VALUES (:userid, :password)"
+            engine.execute(text(insert_query), userid=username, password=password)
+            
+            return redirect(url_for('login'))
+        
+    else:
+        return render_template('signup.html')
+
 
 @app.route('/initial/<username>')
 def success(username):
