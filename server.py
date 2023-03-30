@@ -8,6 +8,7 @@ Go to http://localhost:8111 in your browser.
 A debugger such as "pdb" may be helpful for debugging.
 Read about it online.
 """
+
 import os
 import io
   # accessible as a variable in index.html:
@@ -62,6 +63,9 @@ def teardown_request(exception):
 	except Exception as e:
 		pass
 
+@app.route("/")
+def index():
+    return render_template('login.html')
 
 @app.route('/do_login', methods=['POST'])
 def do_login():
@@ -70,7 +74,6 @@ def do_login():
     # Redirect to the success page
     return redirect(url_for('initial', username=username))
 
-import random
 
 @app.route('/signup', methods=['GET', 'POST'])
 def signup():
@@ -126,7 +129,7 @@ def signup():
         return render_template('signup.html')
 
 
-@app.route('/initial/<username>')
+@app.route('/initial')
 def success(username):
     select_query = "SELECT companyname from company"
     cursor = g.conn.execute(text(select_query))
@@ -137,7 +140,7 @@ def success(username):
     cursor.close()
 
     context = dict(data=names)
-    return render_template('initial.html', username=username, **context)
+    return render_template('initial.html',**context)
 
 
 
