@@ -63,7 +63,7 @@ def teardown_request(exception):
 		pass
 
 
-@app.route('/')
+@app.route('/login')
 def do_login():
     return render_template('login.html')
 
@@ -114,11 +114,6 @@ def another():
 # 	g.conn.commit()
 # 	return redirect('/')
 
-
-@app.route('/login')
-def login():
-	abort(401)
-	this_is_never_executed()
 
 
 if __name__ == "__main__":
