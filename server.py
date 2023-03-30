@@ -19,7 +19,7 @@ import matplotlib.pyplot as plt
 import pandas as pd
 
 tmpl_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'templates')
-app = Flask(__name__, template_folder=tmpl_dir)
+app = Flask(__name__, template_folder=tmpl_dir,static_folder='static')
 
 
 DATABASE_USERNAME = ""
@@ -85,12 +85,8 @@ def plot():
     result_proxy = g.conn.execute(querytest)
     df = pd.read_sql_query(querytest, g.conn)
     sns.lineplot(data=df, x='Years', y='AnnualRevenue', hue='CompanyID')
-    img = io.BytesIO()
-    plt.savefig(img, format='png')
-    print(os.listdir('static'))
-    img.seek(0)
-    print("Image returned!")
-    return send_file(io.BytesIO(img.getvalue()), mimetype='image/png')
+    plt.savefig('static/plot.png')
+    return render_template('index.html')
 
 
 
