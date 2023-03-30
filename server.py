@@ -87,7 +87,9 @@ def plot():
     sns.lineplot(data=df, x='Years', y='AnnualRevenue', hue='CompanyID')
     img = io.BytesIO()
     plt.savefig(img, format='png')
+    print(os.listdir('static'))
     img.seek(0)
+    print("Image returned!")
     return send_file(io.BytesIO(img.getvalue()), mimetype='image/png')
 
 
