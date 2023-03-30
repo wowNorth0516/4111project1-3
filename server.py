@@ -74,7 +74,7 @@ def do_login():
     password = escape(request.form['password'])
 
     # check if user exists in database
-    select_query = "SELECT * FROM User WHERE UserID = :UserID"
+    select_query = "SELECT * FROM Users WHERE UserID = :UserID"
     cursor = g.conn.execute(text(select_query), UserID=username)
     result = cursor.fetchone()
     cursor.close()
@@ -97,7 +97,7 @@ def signup():
         is_employee = escape(request.form.get('is_employee'))
         
         # Check if user already exists
-        select_query = "SELECT * FROM User WHERE UserID = :UserID"
+        select_query = "SELECT * FROM Users WHERE UserID = :UserID"
         cursor = g.conn.execute(text(select_query), UserID=username)
         result = cursor.fetchone()
         cursor.close()
@@ -133,7 +133,7 @@ def signup():
             g.conn.execute(text(insert_query), UserID=username, JobSeekerID=JobSeekerID, Age=Age, Gender=Gender, 
                             DesiredPosition=DesiredPosition, DesiredSalary=DesiredSalary)
             # Insert to user table
-            insert_query = "INSERT INTO User (UserID, UserPSW) \
+            insert_query = "INSERT INTO Users (UserID, UserPSW) \
                             VALUES (:UserID, :password)"
             g.conn.execute(text(insert_query), UserID=username, UserPSW=password)
             
