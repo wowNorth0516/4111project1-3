@@ -75,7 +75,7 @@ def do_login():
 
     # check if user exists in database
     select_query = "SELECT * FROM Users WHERE UserID = :UserID"
-    cursor = g.conn.execute(text(select_query), UserID=username)
+    cursor = g.conn.execute(text(select_query), username)
     result = cursor.fetchone()
     cursor.close()
 
@@ -86,7 +86,7 @@ def do_login():
 
     # redirect to success page
     else:
-        return redirect(url_for('initial', username=username))
+        return redirect(url_for('initial', username))
 
 
 @app.route('/signup', methods=['GET', 'POST'])
