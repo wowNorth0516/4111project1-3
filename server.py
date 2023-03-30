@@ -171,7 +171,10 @@ def success(username):
     company_ids = sorted(set([row[0] for row in data]))
     years = sorted(set([row[1] for row in data]))
     revenue_data = {company_id: [row[2] for row in data if row[0] == company_id] for company_id in company_ids}
-
+    print(company_ids)
+    print(revenue_data)
+    print(years)
+    
     # Create the plot
     fig, ax = plt.subplots()
     for company_id in company_ids:
