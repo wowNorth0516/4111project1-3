@@ -71,11 +71,11 @@ def index():
         names.append(result[0])
     cursor.close()
 
-    select_query = "SELECT * from FinancialData"
-    cursor = g.conn.execute(text(select_query))
-    financialdata = []
-    for result in cursor:
-        financialdata.append(result)
+    querytest = "SELECT * from FinancialData"
+    result_proxy = g.conn.execute(querytest)
+    rows = result_proxy.fetchall()
+    columns = result_proxy.keys()
+    financialdata = pd.DataFrame(rows, columns=columns)
     cursor.close()
 
     context = dict(data=names, financialdata=financialdata)
