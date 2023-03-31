@@ -178,7 +178,8 @@ def search():
 
 @app.route('/search_results')
 def search_results():
-    query = request.args.get('query')
+    querytemp = escape(request.form['query'])
+    query = request.args.get(querytemp)
     
     # Simulate searching for companies based on the query
     companies = [
