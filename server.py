@@ -195,8 +195,8 @@ def company_details(company_id):
 
 def get_company_info(company_id):
     # Fetch the company data using the company ID
-    query = "SELECT * FROM company WHERE companyid = ?;"
-    g.conn.execute(query, (company_id,))
+    query = f"SELECT * FROM company WHERE companyid = {company_id};"
+    g.conn.execute(query)
     company_data = g.conn.fetchone()
 
     # Convert the company data to a dictionary
