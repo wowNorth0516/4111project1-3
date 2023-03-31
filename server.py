@@ -187,7 +187,7 @@ def search_results():
 
     return render_template('search_results.html', query=query, companies=companies)
 
-@app.route('/company/<int:company_id>')
+@app.route('/company/<string:company_id>')
 def company_details(company_id):
     # In a real application, you would fetch the company details from the database
     # using the company_id and render a template with the company information.
@@ -195,7 +195,7 @@ def company_details(company_id):
 
 def get_company_info(company_id):
     # Fetch the company data using the company ID
-    query = "SELECT * FROM company WHERE companyid = %s;"
+    query = f"SELECT * FROM company WHERE companyid = %s;"
     company_data = g.conn.execute(query, (company_id,)).fetchone()
 
     # Convert the company data to a dictionary
@@ -206,6 +206,8 @@ def get_company_info(company_id):
         'foundingdate': company_data[3]
     }
 
+    # Close the database connection
+    g.conn.close()
     return company
 
 @app.route('/company_info', methods=['GET'])
@@ -216,6 +218,7 @@ def company_info():
     company = get_company_info(company_id)  # Implement this function to fetch the data from your database
 
     return render_template('company_info.html', company=company)
+
 
 @app.route('/filter_data', methods=['POST'])
 def filter_data():
