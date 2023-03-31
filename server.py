@@ -15,7 +15,7 @@ import base64
   # accessible as a variable in index.html:
 from sqlalchemy import *
 from sqlalchemy.pool import NullPool
-from flask import Flask, request, render_template, g, redirect, Response,url_for,send_from_directory,send_file
+from flask import Flask, request, render_template, g, redirect, Response,url_for,send_from_directory,send_file,session
 import seaborn as sns
 import matplotlib
 matplotlib.use('Agg')
@@ -100,12 +100,12 @@ def do_login():
             error_msg = "Incorrect password, please try again."
             return render_template('login.html', error_msg=error_msg)
         else:
-            return redirect(url_for('initial', username=username))
+            return redirect(url_for('search', username=username))
 
-@app.route('/initial/<username>')
-def initial(username):
-    # do something
-    return render_template('initial.html', username=username)
+# @app.route('/initial/<username>')
+# def initial(username):
+#     # do something
+#     return render_template('initial.html', username=username)
 
 
 @app.route('/signup', methods=['GET', 'POST'])
@@ -161,16 +161,16 @@ def signup():
     else:
         return render_template('signup.html')
 
-@app.route('/initial/<username>')
-def success(username):
-    select_query = "SELECT * from FinancialData"
-    cursorX = g.conn.execute(text(select_query))
+# @app.route('/initial/<username>')
+# def success(username):
+#     select_query = "SELECT * from FinancialData"
+#     cursorX = g.conn.execute(text(select_query))
 
-    # Retrieve the data from the cursor
-    data = cursorX.fetchall()
+#     # Retrieve the data from the cursor
+#     data = cursorX.fetchall()
 
-    context = {'username': username, 'data': data}
-    return render_template('initial.html', **context)
+#     context = {'username': username, 'data': data}
+#     return render_template('initial.html', **context)
 
 @app.route('/search')
 def search():
@@ -223,8 +223,8 @@ def get_company_info(company_id):
 
     # Close the database connection
     g.conn.close()
-
     return company
+
 # app.py
 @app.route('/filter_data', methods=['POST'])
 def filter_data():
@@ -245,7 +245,6 @@ def filter_data():
 
     return render_template('filtered_data.html', filtered_data=filtered_data, filter_option=filter_option)
 
-# app.py
 @app.route('/compare_data', methods=['POST'])
 def compare_data():
     compare_option = request.form['compare-option']
@@ -277,6 +276,7 @@ def get_user_data(user_id, compare_option):
 
     g.conn.execute(query, (user_id,))
     return g.conn.fetchone()
+
 # This is an example of a different path.  You can see it at:
 # 
 #     localhost:8111/another
