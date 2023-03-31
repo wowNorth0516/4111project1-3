@@ -196,7 +196,7 @@ def company_details(company_id):
 def get_company_info(company_id):
     # Fetch the company data using the company ID
     query = "SELECT * FROM company WHERE companyid = :companyid;"
-    result = g.conn.execute(text(query).params(companyid=company_id))
+    result = g.conn.execute(text(query).params(company_id=company_id))
     company_data = result.fetchone()
 
     # Convert the company data to a dictionary
