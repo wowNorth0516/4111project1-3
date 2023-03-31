@@ -194,10 +194,9 @@ def company_details(company_id):
     return f"Company details for company ID: {company_id}"
 
 def get_company_info(company_id):
-
     # Fetch the company data using the company ID
-    query = f"SELECT * FROM company WHERE companyid = ?;"
-    g.conn.execute(query,(company_id,))
+    query = "SELECT * FROM company WHERE companyid = ?;"
+    g.conn.execute(query, (company_id,))
     company_data = g.conn.fetchone()
 
     # Convert the company data to a dictionary
@@ -214,17 +213,17 @@ def get_company_info(company_id):
 
 @app.route('/company_info', methods=['GET'])
 def company_info():
-    companyid = request.args.get('companyid')
+    company_id = request.args.get('company_id')
 
     # Fetch the company information from the database using the company_id
-    company = get_company_info(companyid)  # Implement this function to fetch the data from your database
+    company = get_company_info(company_id)  # Implement this function to fetch the data from your database
 
     return render_template('company_info.html', company=company)
 
 @app.route('/filter_data', methods=['POST'])
 def filter_data():
     filter_option = request.form['filter-option']
-    company_id = request.form['companyid']
+    company_id = request.form['company_id']
     
     if filter_option == 'departments':
         # Filter departments based on the company_id
@@ -243,7 +242,7 @@ def filter_data():
 @app.route('/compare_data', methods=['POST'])
 def compare_data():
     compare_option = request.form['compare-option']
-    company_id = request.form['companyid']
+    company_id = request.form['company_id']
     
     if compare_option == 'salary':
         # Fetch salary data based on the company_id
