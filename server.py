@@ -193,19 +193,11 @@ def company_details(company_id):
     # using the company_id and render a template with the company information.
     return f"Company details for company ID: {company_id}"
 
-@app.route('/company_info', methods=['GET'])
-def company_info():
-    company_id = request.args.get('company_id')
-
-    # Fetch the company information from the database using the company_id
-    company = get_company_info(company_id)  # Implement this function to fetch the data from your database
-
-    return render_template('company_info.html', company=company)
 def get_company_info(company_id):
 
     # Fetch the company data using the company ID
-    query = f"SELECT * FROM company WHERE companyid = '{company_id}';"
-    g.conn.execute(query)
+    query = f"SELECT * FROM company WHERE companyid = ?;"
+    g.conn.execute(query,(company_id,))
     company_data = g.conn.fetchone()
 
     # Convert the company data to a dictionary
@@ -220,11 +212,19 @@ def get_company_info(company_id):
     g.conn.close()
     return company
 
-# app.py
+@app.route('/company_info', methods=['GET'])
+def company_info():
+    companyid = request.args.get('companyid')
+
+    # Fetch the company information from the database using the company_id
+    company = get_company_info(companyid)  # Implement this function to fetch the data from your database
+
+    return render_template('company_info.html', company=company)
+
 @app.route('/filter_data', methods=['POST'])
 def filter_data():
     filter_option = request.form['filter-option']
-    company_id = request.form['company_id']
+    company_id = request.form['companyid']
     
     if filter_option == 'departments':
         # Filter departments based on the company_id
@@ -243,7 +243,7 @@ def filter_data():
 @app.route('/compare_data', methods=['POST'])
 def compare_data():
     compare_option = request.form['compare-option']
-    company_id = request.form['company_id']
+    company_id = request.form['companyid']
     
     if compare_option == 'salary':
         # Fetch salary data based on the company_id
