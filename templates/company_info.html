@@ -32,6 +32,16 @@
   <input type="hidden" name="company_id" value="{{ company.companyid }}" />
   <input type="submit" value="Apply" />
 </form>
+<form id="compare-form" method="post" action="/compare_data">
+  <label for="compare-option">Compare by:</label>
+  <select name="compare-option" id="compare-option">
+    <option value="salary">Salary</option>
+    <option value="age">Age</option>
+    <!-- Add more compare options here -->
+  </select>
+  <input type="hidden" name="company_id" value="{{ company.companyid }}" />
+  <input type="submit" value="Compare" />
+</form>
 </html>
 
 
