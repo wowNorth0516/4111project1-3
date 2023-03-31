@@ -182,7 +182,7 @@ def search_results():
     
     select_query = "SELECT * FROM company WHERE LOWER(companyname) LIKE :query"
     cursor = g.conn.execute(text(select_query), {'query': f"%{query.lower()}%"})
-    companies = [{"ID": c.companyid, "NAME": c.companyname, "HEADQUARTER": c.headquarter, "FOUNDING DATE": c.foundingdate} for c in cursor.fetchall()]
+    companies = [{"ID": c.companyid, "NAME": c.companyname, "HEADQUARTER": c.headquarter, "FOUNDINGDATE": c.foundingdate} for c in cursor.fetchall()]
     cursor.close()
 
     return render_template('search_results.html', query=query, companies=companies)
