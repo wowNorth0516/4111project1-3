@@ -180,9 +180,9 @@ def search():
 def search_results():
     query = request.args.get('query')
     
-    select_query = "SELECT companyid, companyname FROM company WHERE LOWER(companyname) LIKE :query"
+    select_query = "SELECT * FROM company WHERE LOWER(companyname) LIKE :query"
     cursor = g.conn.execute(text(select_query), {'query': f"%{query.lower()}%"})
-    companies = [{"id": c.companyid, "name": c.companyname} for c in cursor.fetchall()]
+    companies = [{"ID": c.companyid, "NAME": c.companyname, "HEADQUARTER": c.headquarter, "FOUNDING DATE": c.foundingdate} for c in cursor.fetchall()]
     cursor.close()
 
     return render_template('search_results.html', query=query, companies=companies)
@@ -192,30 +192,6 @@ def company_details(company_id):
     # In a real application, you would fetch the company details from the database
     # using the company_id and render a template with the company information.
     return f"Company details for company ID: {company_id}"
-
-def get_company_info(company_id):
-    # Fetch the company data using the company ID
-    query = "SELECT * FROM company WHERE companyid = :company_id;"
-    result = g.conn.execute(text(query).params(company_id=company_id))
-    company_data = result.fetchone()
-
-    # Convert the company data to a dictionary
-    company = {
-        'companyid': company_data[0],
-        'companyname': company_data[1],
-        'headquarter': company_data[2],
-        'foundingdate': company_data[3]
-    }
-
-    # Close the database connection
-    g.conn.close()
-    return company
-
-@app.route('/company/<company_id>')
-def show_company_info(company_id):
-    company = get_company_info(company_id)
-    return render_template('company_info.html', company=company)
-
 
 @app.route('/filter_data', methods=['POST'])
 def filter_data():
