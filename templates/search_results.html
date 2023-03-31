@@ -7,13 +7,17 @@
         <tr>
             <th>Company ID</th>
             <th>Company Name</th>
+            <th>Headquarter</th>
+            <th>Founding Date</th>
         </tr>
     </thead>
     <tbody>
         {% for company in companies %}
             <tr>
-                <td>{{ company.id }}</td>
-                <td><a href="/company/{{company.id}}">{{ company.name }}</a ></td>
+                <td>{{ company.ID }}</td>
+                <td>{{ company.NAME }}</td>
+                <td>{{ company.HEADQUARTER }}</td>
+                <td>{{ company.FOUNDING DATE }}</td>
             </tr>
         {% endfor %}
     </tbody>
