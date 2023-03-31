@@ -8,9 +8,9 @@
 <body>
     <h1>Search Results for "{{ query }}"</h1>
     <ul>
-    {% for company in companies %}
+    {% for company in company %}
         <li>
-            <a href="/company/{{ company.id }}">{{ company.name }}</a>
+            <a href="/company/{{ CompanyID }}">{{ companyname }}</a>
         </li>
     {% endfor %}
     </ul>
