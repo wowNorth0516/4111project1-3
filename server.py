@@ -211,13 +211,9 @@ def get_company_info(company_id):
     g.conn.close()
     return company
 
-@app.route('/company_info', methods=['GET'])
-def company_info():
-    company_id = request.args.get('company_id')
-
-    # Fetch the company information from the database using the company_id
-    company = get_company_info(company_id)  # Implement this function to fetch the data from your database
-
+@app.route('/company/<company_id>')
+def show_company_info(company_id):
+    company = get_company_info(company_id)
     return render_template('company_info.html', company=company)
 
 

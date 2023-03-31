@@ -13,7 +13,7 @@
         {% for company in companies %}
             <tr>
                 <td>{{ company.id }}</td>
-                <td><a href="/company/{{ company.id }}/info">{{ company.name }}</a ></td>
+                <td><a href="/company/{{company.id}}">{{ company.name }}</a ></td>
             </tr>
         {% endfor %}
     </tbody>
