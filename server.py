@@ -196,7 +196,8 @@ def company_details(company_id):
 def get_company_info(company_id):
     # Fetch the company data using the company ID
     query = "SELECT * FROM company WHERE companyid = :company_id;"
-    company_data = g.conn.execute(query, {'company_id': company_id}).fetchone()
+    result = g.conn.execute(query, company_id=company_id)
+    company_data = result.fetchone()
 
     # Convert the company data to a dictionary
     company = {
@@ -207,8 +208,10 @@ def get_company_info(company_id):
     }
 
     # Close the database connection
+    result.close()
     g.conn.close()
     return company
+
 
 @app.route('/company_info', methods=['GET'])
 def company_info():
