@@ -1,19 +1,22 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Search Results</title>
-</head>
-<body>
-    <h1>Search Results for "{{ query }}"</h1>
-    <ul>
-    {% for company in company %}
-        <li>
-            <a href="/company/{{ CompanyID }}">{{ companyname }}</a>
-        </li>
-    {% endfor %}
-    </ul>
-</body>
-</html>
+<html>
+<h2>Search Results</h2>
+<p>Results for query "{{ query }}":</p >
 
+<table class="table">
+    <thead>
+        <tr>
+            <th>Company ID</th>
+            <th>Company Name</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for company in companies %}
+            <tr>
+                <td>{{ company.id }}</td>
+                <td><a href=" 'company_details', company_id=company.id) }}">{{ company.name }}</a ></td>
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>
+<p><a href="comparison">Company Data Comparison</a></p>
+</html>

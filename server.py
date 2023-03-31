@@ -178,19 +178,13 @@ def search():
 
 @app.route('/search_results')
 def search_results():
-    querytemp = escape(request.form['query'])
-    query = request.args.get(querytemp)
+    query = request.args.get('query')
     
-    # Simulate searching for companies based on the query
-    companies = [
-        {"id": "c1", "name": "Company 1"},
-        {"id": "c2", "name": "Company 2"},
-        {"id": "c3", "name": "Company 3"},
-    ]
-    
-    # In a real application, you would search the database for companies
-    # matching the search query and return the results.
-    
+    select_query = "SELECT companyid, companyname FROM company WHERE LOWER(companyname) LIKE :query"
+    cursor = g.conn.execute(text(select_query), {'query': f"%{query.lower()}%"})
+    companies = [{"id": c.companyid, "name": c.companyname} for c in cursor.fetchall()]
+    cursor.close()
+
     return render_template('search_results.html', query=query, companies=companies)
 
 @app.route('/company/<string:company_id>')
