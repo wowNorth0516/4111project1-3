@@ -232,23 +232,23 @@ def filter_data():
     company_id = request.form['company_id']
     if filter_option_1 is not None or filter_option_2 is not None:
         if filter_option_1 == 'Gender':
-            query = """SELECT e.*, d.cityname, d.stateid,d.departmentname
+            query = """SELECT e.*, d.*
                 FROM employee e 
                 Join department d
                 on e.departmentid = d.departmentid
                 WHERE e.companyid = :company_id AND gender = :filter_option_2"""
         elif filter_option_1 == 'Positions':
-            query = """SELECT e.*, d.cityname, d.stateid,d.departmentname
+            query = """SELECT e.*, d.*
                 FROM employee e
                 Join department d 
                 on e.departmentid = d.departmentid
                 WHERE e.companyid = :company_id AND currentposition = :filter_option_2"""
         elif filter_option_1 == 'Departments':
-            query = """SELECT e.*, d.departmentname, d.cityname, d.stateid
-        FROM employee e
-        JOIN department d
-        ON e.departmentid = d.departmentid
-        WHERE e.companyid = :company_id AND d.departmentname = :filter_option_2"""
+            query = """SELECT e.*, d.*
+                FROM employee e
+                JOIN department d
+                ON e.departmentid = d.departmentid
+                WHERE e.companyid = :company_id AND d.departmentname = :filter_option_2"""
         elif filter_option_1 == 'Financial Data':
             query = "SELECT * FROM financialdata WHERE companyid = :company_id AND years = :filter_option_2"
         filtered_data = g.conn.execute(text(query), {'company_id': company_id, 'filter_option_2': filter_option_2}).fetchall()
