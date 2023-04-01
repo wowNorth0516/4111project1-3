@@ -186,7 +186,7 @@ def search():
 def search_results():
     query = request.args.get('query')
     
-    select_query = "SELECT * FROM company WHERE LOWER(companyname) LIKE :query"
+    select_query = "SELECT * FROM company WHERE LOWER(companyname) LIKE :query OR LOWER(companyname) = :query"
     cursor = g.conn.execute(text(select_query), {'query': f"%{query.lower()}%"})
     companies = [{"ID": c.companyid, "NAME": c.companyname, "HEADQUARTER": c.headquarter, "FOUNDINGDATE": c.foundingdate} for c in cursor.fetchall()]
     cursor.close()
@@ -225,31 +225,39 @@ def company_data(company_id):
 def filter_data():
     filter_option_1 = request.form['filter-option-1']
     filter_option_2 = request.form['filter-option-2']
-    company_id = request.form['company_id']
-
-    if filter_option_1 == 'Gender':
-        query = """SELECT e.*, d.cityname, d.stateid,d.departmentname
-            FROM employee e 
-            Join department d
-            on e.departmentid = d.departmentid
-            WHERE e.companyid = :company_id AND gender = :filter_option_2"""
-    elif filter_option_1 == 'Positions':
-        query = "SELECT * FROM employee WHERE companyid = :company_id AND currentposition = :filter_option_2"
-    elif filter_option_1 == 'Departments':
-        query = "SELECT * FROM employee WHERE companyid = :company_id AND departmentname = :filter_option_2"
-    elif filter_option_1 == 'Financial Data':
-        query = "SELECT * FROM financialdata WHERE companyid = :company_id AND years = :filter_option_2"
-    filtered_data = g.conn.execute(text(query), {'company_id': company_id, 'filter_option_2': filter_option_2}).fetchall()
-    select_query_1 = "SELECT * FROM company"
-    cursor = g.conn.execute(text(select_query_1))
-    companies = [{"id": c.companyid, "name": c.companyname} for c in cursor.fetchall()]
-    cursor.close()
-    select_query_2 = "SELECT DISTINCT d.departmentid, d.departmentname FROM department d JOIN employee e ON d.departmentid = e.departmentid WHERE e.companyid = :company_id"
-    cursor = g.conn.execute(text(select_query_2), {'company_id': company_id})
-    departments = [{"id": d.departmentid, "name": d.departmentname} for d in cursor.fetchall()]
-    cursor.close()
-    g.conn.close()
-    return render_template('filtered_data.html', filtered_data=filtered_data, filter_option_1=filter_option_1, filter_option_2=filter_option_2, company_id=company_id, companies=companies, departments=departments)
+    company_id = request.form['company.ID']
+    if filter_option_1 is not None or filter_option_2 is not None:
+        if filter_option_1 == 'Gender':
+            query = """SELECT e.*, d.cityname, d.stateid,d.departmentname
+                FROM employee e 
+                Join department d
+                on e.departmentid = d.departmentid
+                WHERE e.companyid = :company_id AND gender = :filter_option_2"""
+        elif filter_option_1 == 'Positions':
+            query = """SELECT e.*, d.cityname, d.stateid,d.departmentname
+                FROM employee e
+                Join department d 
+                on e.departmentid = d.departmentid
+                WHERE e.companyid = :company_id AND currentposition = :filter_option_2"""
+        elif filter_option_1 == 'Departments':
+            query = """SELECT * 
+                FROM employee e
+                WHERE companyid = :company_id AND departmentname = :filter_option_2"""
+        elif filter_option_1 == 'Financial Data':
+            query = "SELECT * FROM financialdata WHERE companyid = :company_id AND years = :filter_option_2"
+        filtered_data = g.conn.execute(text(query), {'company_id': company_id, 'filter_option_2': filter_option_2}).fetchall()
+        select_query_1 = "SELECT * FROM company"
+        cursor = g.conn.execute(text(select_query_1))
+        companies = [{"id": c.companyid, "name": c.companyname} for c in cursor.fetchall()]
+        cursor.close()
+        select_query_2 = "SELECT DISTINCT d.departmentid, d.departmentname FROM department d JOIN employee e ON d.departmentid = e.departmentid WHERE e.companyid = :company_id"
+        cursor = g.conn.execute(text(select_query_2), {'company_id': company_id})
+        departments = [{"id": d.departmentid, "name": d.departmentname} for d in cursor.fetchall()]
+        cursor.close()
+        g.conn.close()
+        return render_template('filtered_data.html', filtered_data=filtered_data, filter_option_1=filter_option_1, filter_option_2=filter_option_2, company_id=company_id, companies=companies, departments=departments)
+    else:
+        return redirect(url_for('company_details', company_id=company_id))
 
 @app.route('/compare_data', methods=['POST'])
 def compare_data():
