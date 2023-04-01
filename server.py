@@ -206,7 +206,7 @@ def company_data(company_id):
     g.conn.close()
 
     # Pass the data to the template for rendering
-    return render_template('company_data.html', data=data)
+    return render_template('company_details.html', data=data)
 
 # data = [{"Employee ID": c.employeeid, "Employee Name":c.employeename, "Gender":c.gender,
 #              "City":c.city,"State":c.state, "Department Name":c.departmentname,
