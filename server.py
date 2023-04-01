@@ -199,7 +199,7 @@ def company_data(company_id):
         on e.departmentid =  d.departmentid
         join location l
         on d.stateid = l.stateid and d.cityname = l.cityname
-        where employee.companyid = :company_id AND employee.years = financialdata.years;
+        where e.companyid = :company_id AND e.years = f.years;
 
     """
     result = g.conn.execute(text(query), {'company_id': company_id})
