@@ -1,6 +1,6 @@
 {% block content %}
 <h1>Comparison of Companies</h1>
-
+{% if filter_option_1 != 'Financial Data' %}
 <h2>Company 1</h2>
 <table>
     <thead>
@@ -72,5 +72,41 @@
         {% endfor %}
     </tbody>
 </table>
-
+{% endif %}
+{% if filter_option_1 == 'Financial Data' %}
+<h2>Company 1</h2>
+<table>
+  <tr>
+      <th>Company ID</th>
+      <th>Year</th>
+      <th>Annual Revenue</th>
+      <th>Market Capitalization</th>
+  </tr>
+  {% for row in filtered_data %}
+  <tr>
+      <td>{{ row.companyid }}</td>
+      <td>{{ row.years }}</td>
+      <td>{{ row.annualrevenue }}</td>
+      <td>{{ row.marketcapitalization }}</td>
+  </tr>
+  {% endfor %}
+</table>
+<h2>Company 2</h2>
+<table>
+  <tr>
+      <th>Company ID</th>
+      <th>Year</th>
+      <th>Annual Revenue</th>
+      <th>Market Capitalization</th>
+  </tr>
+  {% for row in filtered_data %}
+  <tr>
+      <td>{{ row.companyid }}</td>
+      <td>{{ row.years }}</td>
+      <td>{{ row.annualrevenue }}</td>
+      <td>{{ row.marketcapitalization }}</td>
+  </tr>
+  {% endfor %}
+</table>
+{% endif %}
 {% endblock %}
