@@ -1,32 +1,29 @@
-<!-- filtered_data.html -->
-{% if filter_option == 'departments' %}
-  <table>
+
+{% block body %}
+<h2>Filtered Data</h2>
+<p>Filter Option 1: {{ filter_option_1 }}</p >
+<p>Filter Option 2: {{ filter_option_2 }}</p >
+
+<table>
     <tr>
-      <th>Department ID</th>
-      <th>Department Name</th>
-      <!-- Add more column headers here -->
+        <th>Employee ID</th>
+        <th>Employee Name</th>
+        <th>Gender</th>
+        <th>City</th>
+        <th>State</th>
+        <th>Department Name</th>
+        <th>Salary</th>
     </tr>
     {% for row in filtered_data %}
-      <tr>
-        <td>{{ row.departmentid }}</td>
+    <tr>
+        <td>{{ row.employeeid }}</td>
+        <td>{{ row.employeename }}</td>
+        <td>{{ row.gender }}</td>
+        <td>{{ row.city }}</td>
+        <td>{{ row.state }}</td>
         <td>{{ row.departmentname }}</td>
-        <!-- Add more columns here -->
-      </tr>
-    {% endfor %}
-  </table>
-{% elif filter_option == 'positions' %}
-  <table>
-    <tr>
-      <th>Position</th>
+        <td>{{ row.salary }}</td>
     </tr>
-    {% for row in filtered_data %}
-      <tr>
-        <td>{{ row.currentposition }}</td>
-      </tr>
     {% endfor %}
-  </table>
-{% endif %}
-<input type="hidden" name="company_id" value="{{ company_id }}" />
-
-<!-- Add more tables for other filter options here -->
-
+</table>
+{% endblock %}
