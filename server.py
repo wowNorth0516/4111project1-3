@@ -211,24 +211,24 @@ def company_data(company_id):
 #              "City":c.city,"State":c.state, "Department Name":c.departmentname,
 #              "Salary": c.salary, "Company Annual Revenue": c.annualrevenue} for c in data_temp.fetchall()]
 
-@app.route('/filter_data', methods=['POST'])
-def filter_data():
+@app.route('/filter_data/<company_id>', methods=['POST'])
+def filter_data(companyid):
     filter_option = request.form['filter-option']
     company_id = request.form['company_id']
     
     if filter_option == 'Gender':
         # Filter departments based on the company_id
-        query = "SELECT * FROM department WHERE companyid = %s"
+        query = "SELECT * FROM department WHERE companyid = :company_id"
         g.conn.execute(query, (company_id,))
         filtered_data = g.conn.fetchall()
     elif filter_option == 'positions':
         # Filter positions based on the company_id
-        query = "SELECT currentposition FROM employee WHERE companyid = %s GROUP BY currentposition"
+        query = "SELECT currentposition FROM employee WHERE companyid = :company_id GROUP BY currentposition"
         g.conn.execute(text(query), {'company_id': company_id})
         filtered_data = g.conn.fetchall()
     # Add more filter options here
     g.conn.close()
-    return render_template('filtered_data.html', filtered_data=filtered_data, filter_option=filter_option)
+    return render_template('company_details.html', filtered_data=filtered_data, filter_option=filter_option)
 
 def get_user_data(user_id, compare_option):
     if compare_option == 'salary':
