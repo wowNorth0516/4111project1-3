@@ -1,4 +1,28 @@
-form id="filter-form" method="post" action="/filter_data">
+<table>
+  <thead>
+    <tr>
+      <th>Employee ID</th>
+      <th>Name</th>
+      <th>Department</th>
+      <th>Location</th>
+      <th>Salary</th>
+      <th>Profit</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for row in data %}
+    <tr>
+      <td>{{ row.employeeid }}</td>
+      <td>{{ row.name }}</td>
+      <td>{{ row.departmentname }}</td>
+      <td>{{ row.city }}, {{ row.state }}</td>
+      <td>{{ row.salary }}</td>
+      <td>{{ row.profit }}</td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+<form id="filter-form" method="post" action="/filter_data">
   <label for="filter-option">Filter by:</label>
   <select name="filter-option" id="filter-option">
     <option value="departments">Departments</option>
