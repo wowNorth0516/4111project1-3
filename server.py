@@ -203,7 +203,6 @@ def company_data(company_id):
 
     # Close the database connection
     result.close()
-    g.conn.close()
 
     # Pass the data to the template for rendering
     return render_template('company_details.html', data=data)
@@ -217,7 +216,7 @@ def filter_data():
     filter_option = request.form['filter-option']
     company_id = request.form['company_id']
     
-    if filter_option == 'departments':
+    if filter_option == 'Gender':
         # Filter departments based on the company_id
         query = "SELECT * FROM department WHERE companyid = %s"
         g.conn.execute(query, (company_id,))
@@ -225,10 +224,10 @@ def filter_data():
     elif filter_option == 'positions':
         # Filter positions based on the company_id
         query = "SELECT currentposition FROM employee WHERE companyid = %s GROUP BY currentposition"
-        g.conn.execute(query, (company_id,))
+        g.conn.execute(text(query), {'company_id': company_id})
         filtered_data = g.conn.fetchall()
     # Add more filter options here
-
+    g.conn.close()
     return render_template('filtered_data.html', filtered_data=filtered_data, filter_option=filter_option)
 
 def get_user_data(user_id, compare_option):
