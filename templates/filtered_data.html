@@ -54,3 +54,16 @@
 </table>
 {% endif %}
 {% endblock %}
+
+<form action="/compare_data" method="POST">
+  <label for="compare_with">Compare With:</label>
+  <select name="compare_with" id="compare_with">
+      {% for company in all_companies %}
+      <option value="{{ company.id }}">{{ company.name }}</option>
+      {% endfor %}
+  </select>
+  <input type="hidden" name="company_id" value="{{ company_id }}">
+  <input type="hidden" name="filter_option_1" value="{{ filter_option_1 }}">
+  <input type="hidden" name="filter_option_2" value="{{ filter_option_2 }}">
+  <button type="submit">Apply</button>
+</form>

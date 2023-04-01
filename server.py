@@ -230,8 +230,24 @@ def filter_data():
     elif filter_option_1 == 'Financial Data':
         query = "SELECT * FROM financialdata WHERE companyid = :company_id AND years = :filter_option_2"
     filtered_data = g.conn.execute(text(query), {'company_id': company_id, 'filter_option_2': filter_option_2}).fetchall()
+    all_companies = g.conn.execute("SELECT * FROM company").fetchall()
     g.conn.close()
-    return render_template('filtered_data.html', filtered_data=filtered_data, filter_option_1=filter_option_1, filter_option_2=filter_option_2)
+    return render_template('filtered_data.html', filtered_data=filtered_data, filter_option_1=filter_option_1, filter_option_2=filter_option_2,company_id=company_id, all_companies=all_companies)
+
+@app.route('/compare_data', methods=['POST'])
+def compare_data():
+    company_id_1 = request.form['company_id']
+    company_id_2 = request.form['compare_with']
+    filter_option_1 = request.form['filter_option_1']
+    filter_option_2 = request.form['filter_option_2']
+
+    # Fetch data for company 1 based on the filter options
+    data_company_1 = fetch_filtered_data(company_id_1, filter_option_1, filter_option_2)
+
+    # Fetch data for company 2 based on the filter options
+    data_company_2 = fetch_filtered_data(company_id_2, filter_option_1, filter_option_2)
+
+    return render_template('compare_data.html', data_company_1=data_company_1, data_company_2=data_company_2, filter_option_1=filter_option_1, filter_option_2=filter_option_2)
 
 def get_user_data(user_id, compare_option):
     if compare_option == 'salary':

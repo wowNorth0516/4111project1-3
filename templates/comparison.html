@@ -1,22 +1,76 @@
-<!-- comparison.html -->
-{% if compare_option == 'salary' %}
-  <!-- Salary comparison table -->
-  <table>
-    <tr>
-      <th>Your Salary</th>
-      <th>Company Average Salary</th>
-    </tr>
-    ...
-  </table>
-{% elif compare_option == 'age' %}
-  <!-- Age comparison table -->
-  <table>
-    <tr>
-      <th>Your Age</th>
-      <th>Company Average Age</th>
-    </tr>
-    ...
-  </table>
-{% endif %}
+{% block content %}
+<h1>Comparison of Companies</h1>
 
-<!-- Add more tables for other compare options here -->
+<h2>Company 1</h2>
+<table>
+    <thead>
+        <tr>
+          <th>Company ID</th>
+          <th>Employee ID</th>
+          <th>Gender</th>
+          <th>Years</th>
+          <th>Age</th>
+          <th>Current Position</th>
+          <th>Location</th>
+          <th>Salary</th>
+          <th>Working Hours</th>
+          <th>Holidays</th>
+          <th>Satisfaction</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for row in data_company_1 %}
+        <tr>
+          <td>{{ row.companyid }}</td>
+          <td>{{ row.employeeid }}</td>
+          <td>{{ row.gender }}</td>
+          <td>{{ row.years }}</td>
+          <td>{{ row.age }}</td>
+          <td>{{ row.currentposition }}</td>
+          <td>{{ row.cityname }}, {{ row.stateid }}</td>
+          <td>{{ row.salary }}</td>
+          <td>{{ row.workhrsperw }}</td>
+          <td>{{ row.holidays }}</td>
+          <td>{{ row.satisfaction }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+<h2>Company 2</h2>
+<table>
+    <thead>
+        <tr>
+          <th>Company ID</th>
+          <th>Employee ID</th>
+          <th>Gender</th>
+          <th>Years</th>
+          <th>Age</th>
+          <th>Current Position</th>
+          <th>Location</th>
+          <th>Salary</th>
+          <th>Working Hours</th>
+          <th>Holidays</th>
+          <th>Satisfaction</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for row in data_company_2 %}
+        <tr>
+          <td>{{ row.companyid }}</td>
+          <td>{{ row.employeeid }}</td>
+          <td>{{ row.gender }}</td>
+          <td>{{ row.years }}</td>
+          <td>{{ row.age }}</td>
+          <td>{{ row.currentposition }}</td>
+          <td>{{ row.cityname }}, {{ row.stateid }}</td>
+          <td>{{ row.salary }}</td>
+          <td>{{ row.workhrsperw }}</td>
+          <td>{{ row.holidays }}</td>
+          <td>{{ row.satisfaction }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+{% endblock %}
