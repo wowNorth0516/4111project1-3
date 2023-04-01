@@ -232,7 +232,7 @@ def filter_data():
             FROM employee e 
             Join department d
             on e.departmentid = d.departmentid
-            WHERE companyid = :company_id AND gender = :filter_option_2"""
+            WHERE e.companyid = :company_id AND gender = :filter_option_2"""
     elif filter_option_1 == 'Positions':
         query = "SELECT * FROM employee WHERE companyid = :company_id AND currentposition = :filter_option_2"
     elif filter_option_1 == 'Departments':
