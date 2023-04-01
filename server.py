@@ -223,7 +223,8 @@ def filter_data():
         query = "SELECT * FROM employee WHERE companyid = :company_id AND currentposition = :filter_option_2"
     elif filter_option_1 == 'Departments':
         query = "SELECT * FROM employee WHERE companyid = :company_id AND departmentname = :filter_option_2"
-
+    elif filter_option_1 == 'Financial Data':
+        query = "SELECT * FROM financialdata WHERE companyid = :company_id AND years = :filter_option_2"
     filtered_data = g.conn.execute(text(query), {'company_id': company_id, 'filter_option_2': filter_option_2}).fetchall()
     g.conn.close()
     return render_template('filtered_data.html', filtered_data=filtered_data, filter_option_1=filter_option_1, filter_option_2=filter_option_2)

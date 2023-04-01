@@ -1,25 +1,32 @@
 <table>
   <thead>
     <tr>
+      <th>Company ID</th>
       <th>Employee ID</th>
-      <th>Name</th>
       <th>Gender</th>
+      <th>Years</th>
+      <th>Age</th>
       <th>Current Position</th>
       <th>Location</th>
       <th>Salary</th>
-      <th>Annual Revenue</th>
+      <th>Working Hours</th>
+      <th>Holidays</th>
+      <th>Satisfaction</th>
     </tr>
   </thead>
   <tbody>
     {% for row in data %}
     <tr>
+      <td>{{ row.companyid }}</td>
       <td>{{ row.employeeid }}</td>
-      <td>{{ row.name }}</td>
       <td>{{ row.gender }}</td>
+      <td>{{ row.years }}</td>
       <td>{{ row.currentposition }}</td>
       <td>{{ row.city }}, {{ row.state }}</td>
       <td>{{ row.salary }}</td>
-      <td>{{ row.annualrevenue }}</td>
+      <td>{{ row.workhrsperw }}</td>
+      <td>{{ row.holidays }}</td>
+      <td>{{ row.satisfaction }}</td>
     </tr>
     {% endfor %}
   </tbody>
@@ -28,13 +35,13 @@
 <form id="filter-form" method="post" action="/filter_data">
   <label for="filter-option-1">Filter by:</label>
   <select name="filter-option-1" id="filter-option-1">
+    <option value="Financial Data">Financial Data</option>
     <option value="Positions">Positions</option>
     <option value="Gender">Gender</option>
     <option value="Deprtment">Department</option>
   </select>
   <label for="filter-option-2"></label>
   <select name="filter-option-2" id="filter-option-2">
-    <option value="NONE">NONE</option>
   </select>
   <input type="hidden" name="company_id" value="{{ data[0]['companyid'] }}" />
   <input type="submit" value="Apply" />
@@ -51,6 +58,8 @@
       filterOption2.innerHTML = "<option value='Male'>Male</option><option value='Female'>Female</option>";
     } else if (filterOption1 === "Positions") {
       filterOption2.innerHTML = "<option value='Software Developer'>Software Developer</option><option value='Data Analyst'>Data Analyst</option><option value='Project Manager'>Project Manager</option><option value='Senior Software Engineer'>Senior Software Engineer</option>";
+    }else if (filterOption1 === "Financial Data") {
+      filterOption2.innerHTML = "<option value='2018'>2018</option><option value='2019'>2019</option><option value='2020'>2020</option><option value='2021'>2021</option><option value='2022'>2022</option>";
     }
     // Add more conditions for other filter options here
   });
