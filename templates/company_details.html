@@ -3,10 +3,11 @@
     <tr>
       <th>Employee ID</th>
       <th>Name</th>
-      <th>Department</th>
+      <th>Gender</th>
+      <th>Current Position</th>
       <th>Location</th>
       <th>Salary</th>
-      <th>Profit</th>
+      <th>Annual Revenue</th>
     </tr>
   </thead>
   <tbody>
@@ -16,10 +17,9 @@
       <td>{{ row.name }}</td>
       <td>{{ row.gender }}</td>
       <td>{{ row.currentposition }}</td>
-      <!-- <td>{{ row.departmentname }}</td> -->
       <td>{{ row.city }}, {{ row.state }}</td>
       <td>{{ row.salary }}</td>
-      <td>{{ row.AnnualRevenue }}</td>
+      <td>{{ row.annualrevenue }}</td>
     </tr>
     {% endfor %}
   </tbody>
@@ -28,13 +28,12 @@
 <form id="filter-form" method="post" action="/filter_data">
   <label for="filter-option">Filter by:</label>
   <select name="filter-option" id="filter-option">
-    <!-- <option value="department">Department</option> -->
     <option value="positions">Positions</option>
     <option value="gender">Gender</option>
     <option value="employee data">Employee Data</option>
-    <option value="Company AnnualRevenue">Financial Data</option>
+    <option value="financial data">Financial Data</option>
   </select>
-  <input type="hidden" name="company_id" value="{{ employee.companyid }}" />
+  <input type="hidden" name="company_id" value="{{ data[0]['companyid'] }}" />
   <input type="submit" value="Apply" />
 </form>
 
@@ -45,6 +44,7 @@
     <option value="age">Age</option>
     <!-- Add more compare options here -->
   </select>
-  <input type="hidden" name="company_id" value="{{ employee.companyid }}" />
+  <input type="hidden" name="company_id" value="{{ data[0]['companyid'] }}" />
   <input type="submit" value="Compare" />
 </form>
+
