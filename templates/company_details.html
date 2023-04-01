@@ -28,10 +28,9 @@
 <form id="filter-form" method="post" action="/filter_data">
   <label for="filter-option-1">Filter by:</label>
   <select name="filter-option-1" id="filter-option-1">
-    <option value="currentposition">Positions</option>
-    <option value="gender">Gender</option>
-    <option value="employee data">Employee Data</option>
-    <option value="financial data">Financial Data</option>
+    <option value="Positions">Positions</option>
+    <option value="Gender">Gender</option>
+    <option value="Deprtment">Department</option>
   </select>
   <label for="filter-option-2"></label>
   <select name="filter-option-2" id="filter-option-2">
@@ -41,6 +40,23 @@
   <input type="hidden" name="company_id" value="{{ data[0]['companyid'] }}" />
   <input type="submit" value="Apply" />
 </form>
+<script>
+  document.getElementById("filter-option-1").addEventListener("change", function() {
+    var filterOption1 = this.value;
+    var filterOption2 = document.getElementById("filter-option-2");
+    
+    // Remove existing options in filter-option-2
+    filterOption2.innerHTML = "";
+    
+    if (filterOption1 === "Gender") {
+      filterOption2.innerHTML = "<option value='Male'>Male</option><option value='Female'>Female</option>";
+    } else if (filterOption1 === "Positions") {
+      filterOption2.innerHTML = "<option value='Software Developer'>Software Developer</option><option value='Data Analyst'>Data Analyst</option><option value='Project Manager'>Project Manager</option><option value='Senior Software Engineer'>Senior Software Engineer</option>";
+    }
+    // Add more conditions for other filter options here
+  });
+</script>
+
 
 <form id="compare-form" method="post" action="/compare_data">
   <label for="compare-option">Compare by:</label>
