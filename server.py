@@ -211,10 +211,14 @@ def company_data(company_id):
     data = result.fetchall()
 
     # Fetch the list of departments
-    query = "SELECT * FROM department"
-    result = g.conn.execute(text(query))
+    query = """
+    SELECT DISTINCT d.departmentname
+    FROM department d
+    JOIN employee e ON d.departmentid = e.departmentid
+    WHERE e.companyid = :company_id
+    """
+    result = g.conn.execute(text(query), {'company_id': company_id})
     departments = [{"name": row.departmentname} for row in result.fetchall()]
-
     # Close the database connection
     result.close()
 
