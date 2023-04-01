@@ -6,23 +6,31 @@
 {% if filter_option_1 != 'Financial Data' %}
 <table>
     <tr>
-        <th>Employee ID</th>
-        <th>Employee Name</th>
-        <th>Gender</th>
-        <th>City</th>
-        <th>State</th>
-        <th>Department Name</th>
-        <th>Salary</th>
+      <th>Company ID</th>
+      <th>Employee ID</th>
+      <th>Gender</th>
+      <th>Years</th>
+      <th>Age</th>
+      <th>Current Position</th>
+      <th>Location</th>
+      <th>Salary</th>
+      <th>Working Hours</th>
+      <th>Holidays</th>
+      <th>Satisfaction</th>
     </tr>
     {% for row in filtered_data %}
     <tr>
-        <td>{{ row.employeeid }}</td>
-        <td>{{ row.employeename }}</td>
-        <td>{{ row.gender }}</td>
-        <td>{{ row.city }}</td>
-        <td>{{ row.state }}</td>
-        <td>{{ row.departmentname }}</td>
-        <td>{{ row.salary }}</td>
+      <td>{{ row.companyid }}</td>
+      <td>{{ row.employeeid }}</td>
+      <td>{{ row.gender }}</td>
+      <td>{{ row.years }}</td>
+      <td>{{ row.age }}</td>
+      <td>{{ row.currentposition }}</td>
+      <td>{{ row.city }}, {{ row.state }}</td>
+      <td>{{ row.salary }}</td>
+      <td>{{ row.workhrsperw }}</td>
+      <td>{{ row.holidays }}</td>
+      <td>{{ row.satisfaction }}</td>
     </tr>
     {% endfor %}
 {% endif %}
