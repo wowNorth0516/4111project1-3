@@ -14,13 +14,21 @@
     <!doctype html>
     <html>
       <head>
-        <title>Company DATABASE SignUP</title>
+        <title>Company DATABASE SignUP for JobSeeker</title>
       </head>
       <body>
           <h1>Sign Up</h1>
           <form action="{{ url_for('signup') }}" method="post">
           <label for="username">Username:</label>
           <input name="username" id="username" required>
+          <label for="Age">Age:</label>
+          <input name="Age" id="Age" required>
+          <label for="Gender">Gender:</label>
+          <input name="Gender" id="Gender" required>
+          <label for="DesiredPosition">DesiredPosition:</label>
+          <input name="DesiredPosition" id="DesiredPosition" required>
+          <label for="DesiredSalary">DesiredSalary:</label>
+          <input name="DesiredSalary" id="DesiredSalary" required>
           <label for="password">Password</label>
           <input type="password" name="password" id="password" required>
           <input type="submit" value="Register">

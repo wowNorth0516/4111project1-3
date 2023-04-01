@@ -102,11 +102,17 @@ def do_login():
         else:
             return redirect(url_for('search', username=username))
 
-# @app.route('/initial/<username>')
-# def initial(username):
-#     # do something
-#     return render_template('initial.html', username=username)
 
+@app.route('/is_employee_check', methods=['GET', 'POST'])
+def is_employee_check():
+    if request.method == 'POST':
+        is_employee = request.form['is_employee']
+        if is_employee == 'Yes':
+            return render_template('signup_employee.html')
+        else:
+            return render_template('signup.html')
+    else:
+        return render_template('employee_check.html')
 
 @app.route('/signup', methods=['GET', 'POST'])
 def signup():
@@ -138,7 +144,7 @@ def signup():
                 return redirect(url_for('login'))
             else:
                 error_msg = "Invalid employee ID, please check and try again."
-                return render_template('signup.html', error_msg=error_msg)
+                return render_template('signup_employee.html', error_msg=error_msg)
         else:
             Age = escape(request.form['Age'])
             Gender = escape(request.form['Gender'])
