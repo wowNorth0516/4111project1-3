@@ -234,12 +234,7 @@ def filter_data():
     cursor = g.conn.execute(text(select_query_1))
     companies = [{"id": c.companyid, "name": c.companyname} for c in cursor.fetchall()]
     cursor.close()
-    select_query_2 = """
-    SELECT DISTINCT d.departmentid, d.departmentname
-    FROM department d
-    JOIN employee e ON d.departmentid = e.departmentid
-    WHERE e.companyid = :company_id
-"""
+    select_query_2 = "SELECT DISTINCT d.departmentid, d.departmentname FROM department d JOIN employee e ON d.departmentid = e.departmentid WHERE e.companyid = :company_id"
     cursor = g.conn.execute(text(select_query_2), {'company_id': company_id})
     departments = [{"id": d.departmentid, "name": d.departmentname} for d in cursor.fetchall()]
     cursor.close()
