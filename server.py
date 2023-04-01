@@ -188,17 +188,66 @@ def search_results():
     return render_template('search_results.html', query=query, companies=companies)
 
 @app.route('/company/<company_id>')
-def company_data(company_id):
+# def company_data(company_id):
+#     # Fetch all the related data from the database using SQL JOIN statements
+#     query = """
+#         SELECT employee.*, financialdata.annualrevenue, financialdata.marketcapitalization 
+#         FROM employee 
+#         JOIN financialdata 
+#         ON employee.companyid = financialdata.companyid 
+#         where employee.companyid = :company_id AND employee.years = financialdata.years;
+
+#     """
+#     result = g.conn.execute(text(query), {'company_id': company_id})
+#     data = result.fetchall()
+
+#     # Close the database connection
+#     result.close()
+
+#     # Pass the data to the template for rendering
+#     return render_template('company_details.html', data=data)
+
+# # data = [{"Employee ID": c.employeeid, "Employee Name":c.employeename, "Gender":c.gender,
+# #              "City":c.city,"State":c.state, "Department Name":c.departmentname,
+# #              "Salary": c.salary, "Company Annual Revenue": c.annualrevenue} for c in data_temp.fetchall()]
+
+# @app.route('/filter_data', methods=['POST'])
+# def filter_data(companyid):
+#     filter_option = request.form['filter-option']
+#     company_id = request.form['company_id']
+    
+#     if filter_option == 'Gender':
+#         # Filter departments based on the company_id
+#         query = "SELECT * FROM department WHERE companyid = :company_id"
+#         g.conn.execute(query, (company_id,))
+#         filtered_data = g.conn.fetchall()
+#     elif filter_option == 'positions':
+#         # Filter positions based on the company_id
+#         query = "SELECT currentposition FROM employee WHERE companyid = :company_id GROUP BY currentposition"
+#         g.conn.execute(text(query), {'company_id': company_id})
+#         filtered_data = g.conn.fetchall()
+#     # Add more filter options here
+#     g.conn.close()
+#     return render_template('filtered_data.html', filtered_data=filtered_data, filter_option=filter_option)
+
+def company_data(company_id, filter_option=None):
     # Fetch all the related data from the database using SQL JOIN statements
     query = """
         SELECT employee.*, financialdata.annualrevenue, financialdata.marketcapitalization 
         FROM employee 
         JOIN financialdata 
         ON employee.companyid = financialdata.companyid 
-        where employee.companyid = :company_id AND employee.years = financialdata.years;
-
+        where employee.companyid = :company_id AND employee.years = financialdata.years
     """
-    result = g.conn.execute(text(query), {'company_id': company_id})
+    
+    # Add a WHERE clause to the query based on the filter option selected by the user
+    if filter_option == 'Gender':
+        query += " AND employee.gender = :gender"
+    elif filter_option == 'positions':
+        query += " AND employee.currentposition = :position"
+    # Add more filter options here
+
+    result = g.conn.execute(text(query), {'company_id': company_id, 'gender': gender, 'position': position})
     data = result.fetchall()
 
     # Close the database connection
@@ -206,29 +255,15 @@ def company_data(company_id):
 
     # Pass the data to the template for rendering
     return render_template('company_details.html', data=data)
-
-# data = [{"Employee ID": c.employeeid, "Employee Name":c.employeename, "Gender":c.gender,
-#              "City":c.city,"State":c.state, "Department Name":c.departmentname,
-#              "Salary": c.salary, "Company Annual Revenue": c.annualrevenue} for c in data_temp.fetchall()]
-
-@app.route('/filter_data/<company_id>', methods=['POST'])
-def filter_data(companyid):
+@app.route('/filter_data', methods=['POST'])
+def filter_data():
     filter_option = request.form['filter-option']
     company_id = request.form['company_id']
+    filter_value = request.form['filter-value']
     
-    if filter_option == 'Gender':
-        # Filter departments based on the company_id
-        query = "SELECT * FROM department WHERE companyid = :company_id"
-        g.conn.execute(query, (company_id,))
-        filtered_data = g.conn.fetchall()
-    elif filter_option == 'positions':
-        # Filter positions based on the company_id
-        query = "SELECT currentposition FROM employee WHERE companyid = :company_id GROUP BY currentposition"
-        g.conn.execute(text(query), {'company_id': company_id})
-        filtered_data = g.conn.fetchall()
-    # Add more filter options here
-    g.conn.close()
-    return render_template('filtered_data.html', filtered_data=filtered_data, filter_option=filter_option)
+    data = company_data(company_id, filter_option=filter_option, filter_value=filter_value)
+    
+    return render_template('company_details.html', data=data)
 
 def get_user_data(user_id, compare_option):
     if compare_option == 'salary':
