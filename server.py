@@ -191,10 +191,14 @@ def search_results():
 def company_data(company_id):
     # Fetch all the related data from the database using SQL JOIN statements
     query = """
-        SELECT employee.*, financialdata.annualrevenue, financialdata.marketcapitalization 
-        FROM employee 
-        JOIN financialdata 
+        SELECT e.*, d.stateid, d.cityname, f.annualrevenue, f.marketcapitalization 
+        FROM employee e
+        JOIN financialdata f
         ON employee.companyid = financialdata.companyid 
+        join department d
+        on e.departmentid =  d.departmentid
+        join location l
+        on d.stateid = l.stateid and d.cityname = l.cityname
         where employee.companyid = :company_id AND employee.years = financialdata.years;
 
     """
