@@ -195,7 +195,7 @@ def search_results():
 
 @app.route('/company/<company_id>')
 def company_data(company_id):
-    company_id = request.args.get('id')
+    company_id = request.args.get('company.ID')
     # Fetch all the related data from the database using SQL JOIN statements
     query = """
         SELECT e.*, d.*, f.annualrevenue, f.marketcapitalization 
