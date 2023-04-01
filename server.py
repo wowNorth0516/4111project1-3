@@ -252,6 +252,18 @@ def compare_data():
 
     return render_template('compare_data.html', data_company_1=data_company_1, data_company_2=data_company_2, filter_option_1=filter_option_1, filter_option_2=filter_option_2)
 
+def fetch_filtered_data(company_id, filter_option_1, filter_option_2):
+    if filter_option_1 == 'Gender':
+        query = "SELECT * FROM employee WHERE companyid = :company_id AND gender = :filter_option_2"
+    elif filter_option_1 == 'Positions':
+        query = "SELECT * FROM employee WHERE companyid = :company_id AND currentposition = :filter_option_2"
+    elif filter_option_1 == 'Departments':
+        query = "SELECT * FROM employee WHERE companyid = :company_id AND departmentname = :filter_option_2"
+    elif filter_option_1 == 'Financial Data':
+        query = "SELECT * FROM financialdata WHERE companyid = :company_id AND years = :filter_option_2"
+
+    return g.conn.execute(text(query), {'company_id': company_id, 'filter_option_2': filter_option_2}).fetchall()
+
 def get_user_data(user_id, compare_option):
     if compare_option == 'salary':
         query = "SELECT salary FROM employee WHERE userid = %s"
