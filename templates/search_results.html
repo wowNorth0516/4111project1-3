@@ -1,7 +1,6 @@
 <html>
 <h2>Search Results</h2>
 <p>Results for query "{{ query }}":</p >
-
 <table class="table">
     <thead>
         <tr>
@@ -14,13 +13,13 @@
     <tbody>
         {% for company in companies %}
             <tr>
-                <td>{{ company.ID }}</td>
+                <td><a href="/company/{{ company.ID }}">{{ company.ID }}</a></td>
                 <td>{{ company.NAME }}</td>
                 <td>{{ company.HEADQUARTER }}</td>
                 <td>{{ company.FOUNDINGDATE }}</td>
             </tr>
         {% endfor %}
     </tbody>
-</table>
-<p><a href="compare_data">Company Data</a></p>
+</table>    
+<p><a href="filter_data">Company Data</a></p>
 </html>
