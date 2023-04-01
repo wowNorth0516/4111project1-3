@@ -230,9 +230,8 @@ def filter_data():
     elif filter_option_1 == 'Financial Data':
         query = "SELECT * FROM financialdata WHERE companyid = :company_id AND years = :filter_option_2"
     filtered_data = g.conn.execute(text(query), {'company_id': company_id, 'filter_option_2': filter_option_2}).fetchall()
-    all_companies = g.conn.execute("SELECT * FROM company").fetchall()
     g.conn.close()
-    return render_template('filtered_data.html', filtered_data=filtered_data, filter_option_1=filter_option_1, filter_option_2=filter_option_2,company_id=company_id, all_companies=all_companies)
+    return render_template('filtered_data.html', filtered_data=filtered_data, filter_option_1=filter_option_1, filter_option_2=filter_option_2)
 
 @app.route('/compare_data', methods=['POST'])
 def compare_data():
