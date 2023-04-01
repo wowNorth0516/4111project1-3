@@ -250,7 +250,7 @@ def compare_data():
     # Fetch data for company 2 based on the filter options
     data_company_2 = fetch_filtered_data(company_id_2, filter_option_1, filter_option_2)
 
-    return render_template('compare_data.html', data_company_1=data_company_1, data_company_2=data_company_2, filter_option_1=filter_option_1, filter_option_2=filter_option_2)
+    return render_template('comparison.html', data_company_1=data_company_1, data_company_2=data_company_2, filter_option_1=filter_option_1, filter_option_2=filter_option_2)
 
 def fetch_filtered_data(company_id, filter_option_1, filter_option_2):
     if filter_option_1 == 'Gender':
