@@ -228,7 +228,7 @@ def filter_data(companyid):
         filtered_data = g.conn.fetchall()
     # Add more filter options here
     g.conn.close()
-    return render_template('company_details.html', filtered_data=filtered_data, filter_option=filter_option)
+    return render_template('filtered_data.html', filtered_data=filtered_data, filter_option=filter_option)
 
 def get_user_data(user_id, compare_option):
     if compare_option == 'salary':
