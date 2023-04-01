@@ -1,18 +1,36 @@
-<!DOCTYPE html>
-<html>
-<head>
-	<title>Sign Up</title>
-</head>
-<body>
-	<h1>Company DATABASE SignUP for Employee</h1>
-	<form method="post">
-		<label for="username">Username:</label>
-		<input type="text" name="username" required><br><br>
-		<label for="password">Password:</label>
-		<input type="password" name="password" required><br><br>
-		<label for="employee_id">Employee ID:</label>
-		<input type="text" name="employee_id" required><br><br>
-		<input type="submit" value="Submit">
-	</form>
-</body>
-</html>
+
+
+<h<html>
+    <style>
+      body{ 
+        font-size: 15pt;
+        font-family: arial;
+        text-align: center;
+  
+      }
+    </style>
+  
+  
+    <!doctype html>
+    <html>
+      <head>
+        <title>Company DATABASE SignUP for Employee</title>
+      </head>
+      <body>
+          <h1>Sign Up</h1>
+          <form action="{{ url_for('signup') }}" method="post">
+          <label for="username">Username:</label>
+          <input name="username" id="username" required>
+          <label for="EmployeeID">EmployeeID:</label>
+          <input name="EmployeeID" id="EmployeeID" required>
+          <label for="password">Password</label>
+          <input type="password" name="password" id="password" required>
+          <input type="submit" value="Register">
+          {% if error_msg %}
+          <p style="color: red;">{{ error_msg }}</p>
+          {% endif %}
+        </form>
+      </body>
+    </html>
+  
+

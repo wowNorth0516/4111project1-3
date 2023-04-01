@@ -4,13 +4,13 @@
 	<title>Signup Check</title>
 </head>
 <body>
-	<form action="/signup_check" method="POST">
-		<label for="is_employee">Are you an employee?</label>
-		<select id="is_employee" name="is_employee">
-			<option value="Yes">Yes</option>
-			<option value="No">No</option>
-		</select>
-		<button type="submit">Submit</button>
-	</form>
+	<form action="{{ url_for('is_employee_check') }}" method="POST">
+        <label for="is_employee">Are you an employee?</label>
+        <br>
+        <input type="radio" name="is_employee" value="Yes"> Yes
+        <input type="radio" name="is_employee" value="No" checked> No
+        <br>
+        <input type="submit" value="Next">
+    </form>
 </body>
 </html>
