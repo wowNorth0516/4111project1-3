@@ -228,9 +228,10 @@ def filter_data():
     company_id = request.form['company_id']
 
     if filter_option_1 == 'Gender':
-        query = """SELECT e.*, d.cityname, d.stateid FROM employee e 
+        query = """SELECT e.*, d.cityname, d.stateid 
+            FROM employee e 
             Join department d
-            e.departmentid = d.departmentid
+            on e.departmentid = d.departmentid
             WHERE companyid = :company_id AND gender = :filter_option_2"""
     elif filter_option_1 == 'Positions':
         query = "SELECT * FROM employee WHERE companyid = :company_id AND currentposition = :filter_option_2"
