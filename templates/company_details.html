@@ -56,7 +56,7 @@
 </form>
 
 <script>
-  var departmentsData = '{{ departments|tojson }}';
+  var departmentsData = '{{ departments|tojson|safe }}';
   var departments = JSON.parse(departmentsData);
   document.getElementById("filter-option-1").addEventListener("change", function() {
     var filterOption1 = this.value;
