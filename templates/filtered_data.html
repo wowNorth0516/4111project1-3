@@ -58,7 +58,7 @@
 <form action="/compare_data" method="POST">
   <label for="compare_with">Compare With:</label>
   <select name="compare_with" id="compare_with">
-      {% for company in company %}
+      {% for company in companies %}
       <option value="{{ company.id }}">{{ company.name }}</option>
       {% endfor %}
   </select>
