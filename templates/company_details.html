@@ -34,7 +34,7 @@
     <option value="employee data">Employee Data</option>
     <option value="Company AnnualRevenue">Financial Data</option>
   </select>
-  <input type="hidden" name="company_id" value="{{ company.companyid }}" />
+  <input type="hidden" name="company_id" value="{{ employee.companyid }}" />
   <input type="submit" value="Apply" />
 </form>
 
@@ -45,6 +45,6 @@
     <option value="age">Age</option>
     <!-- Add more compare options here -->
   </select>
-  <input type="hidden" name="company_id" value="{{ company.companyid }}" />
+  <input type="hidden" name="company_id" value="{{ employee.companyid }}" />
   <input type="submit" value="Compare" />
 </form>
