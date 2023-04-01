@@ -128,7 +128,7 @@ def signup():
         cursor.close()
         if result:
             error_msg = "Username already exists, please log in or choose a different username."
-            return render_template('signup.html', error_msg=error_msg)
+            return render_template('login.html', error_msg=error_msg)
         
         if is_employee == 'Yes':
             EmployeeID = escape(request.form['EmployeeID'])
