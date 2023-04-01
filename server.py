@@ -112,7 +112,7 @@ def is_employee_check():
         else:
             return render_template('signup.html')
     else:
-        return render_template('employee_check.html')
+        return render_template('is_employee_check.html')
 
 @app.route('/signup', methods=['GET', 'POST'])
 def signup():
