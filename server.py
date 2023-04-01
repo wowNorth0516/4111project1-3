@@ -194,7 +194,7 @@ def company_data(company_id):
         SELECT e.*, d.stateid, d.cityname, f.annualrevenue, f.marketcapitalization 
         FROM employee e
         JOIN financialdata f
-        ON employee.companyid = financialdata.companyid 
+        ON e.companyid = f.companyid 
         join department d
         on e.departmentid =  d.departmentid
         join location l
