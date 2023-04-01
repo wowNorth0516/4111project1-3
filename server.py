@@ -187,11 +187,25 @@ def search_results():
 
     return render_template('search_results.html', query=query, companies=companies)
 
-@app.route('/company/<string:company_id>')
-def company_details(company_id):
-    # In a real application, you would fetch the company details from the database
-    # using the company_id and render a template with the company information.
-    return f"Company details for company ID: {company_id}"
+@app.route('/company/<company_id>')
+def company_data(company_id):
+    # Fetch all the related data from the database using SQL JOIN statements
+    query = """
+        SELECT * FROM employee
+        JOIN department ON employee.departmentid = department.departmentid
+        JOIN location ON department.locationid = location.locationid
+        JOIN financialdata ON employee.employeeid = financialdata.employeeid
+        WHERE employee.companyid = :company_id;
+    """
+    result = g.conn.execute(query, company_id=company_id)
+    data = result.fetchall()
+
+    # Close the database connection
+    result.close()
+    g.conn.close()
+
+    # Pass the data to the template for rendering
+    return render_template('company_data.html', data=data)
 
 @app.route('/filter_data', methods=['POST'])
 def filter_data():
