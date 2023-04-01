@@ -54,7 +54,13 @@
   <input type="hidden" name="company_id" value="{{ data[0]['companyid'] }}" />
   <input type="submit" value="Apply" />
 </form>
-
+{% set department_options = "" %}
+{% for department in departments %}
+  {% set department_options = department_options + '<option value="' + department.name + '"' + (' selected' if filter_option_2 == department.name else '') + '>' + department.name + '</option>' %}
+{% endfor %}
+<script>
+  var departmentOptions = '{{ department_options|safe }}';
+</script>
 <script>
   document.getElementById("filter-option-1").addEventListener("change", function() {
     var filterOption1 = this.value;
@@ -70,9 +76,8 @@
     }else if (filterOption1 === "Financial Data") {
       filterOption2.innerHTML = "<option value='2018'>2018</option><option value='2019'>2019</option><option value='2020'>2020</option><option value='2021'>2021</option><option value='2022'>2022</option>";
     }else if (filterOption1 === "Departments") {
-    for (department in departments){
-        filterOption2.innerHTML += '<option value="{{ department.name }}"{% if filter_option_2 == department.name %} selected{% endif %}>{{ department.name }}</option>';
-    }}
+      filterOption2.innerHTML = departmentOptions;
+    }
   });
 </script>
   
