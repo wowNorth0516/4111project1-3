@@ -1,5 +1,5 @@
 <table>
-<!-- </p>The Data for {%data.companyname%}</p> -->
+  <!-- <p>The Data for {{ company.companyname }}</p> -->
   <thead>
     <tr>
       <th>Employee ID</th>
@@ -25,6 +25,7 @@
     {% endfor %}
   </tbody>
 </table>
+
 <form id="filter-form" method="post" action="/filter_data">
   <label for="filter-option">Filter by:</label>
   <select name="filter-option" id="filter-option">
@@ -37,6 +38,7 @@
   <input type="hidden" name="company_id" value="{{ company.companyid }}" />
   <input type="submit" value="Apply" />
 </form>
+
 <form id="compare-form" method="post" action="/compare_data">
   <label for="compare-option">Compare by:</label>
   <select name="compare-option" id="compare-option">
