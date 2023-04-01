@@ -210,11 +210,16 @@ def company_data(company_id):
     result = g.conn.execute(text(query), {'company_id': company_id})
     data = result.fetchall()
 
+    # Fetch the list of departments
+    query = "SELECT * FROM department"
+    result = g.conn.execute(text(query))
+    departments = [{"name": row.name} for row in result.fetchall()]
+
     # Close the database connection
     result.close()
 
-    # Pass the data to the template for rendering
-    return render_template('company_details.html', data=data)
+    # Pass the data and departments to the template for rendering
+    return render_template('company_details.html', data=data, departments=departments)
 
 # data = [{"Employee ID": c.employeeid, "Employee Name":c.employeename, "Gender":c.gender,
 #              "City":c.city,"State":c.state, "Department Name":c.departmentname,
