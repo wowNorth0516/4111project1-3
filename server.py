@@ -195,9 +195,9 @@ def company_data(company_id):
         JOIN department ON employee.departmentid = department.departmentid
         JOIN location ON department.locationid = location.locationid
         JOIN financialdata ON employee.employeeid = financialdata.employeeid
-        WHERE employee.companyid = :company_id;
+        WHERE employee.companyid = %s;
     """
-    result = g.conn.execute(query, company_id=company_id)
+    result = g.conn.execute(query, (company_id,))
     data = result.fetchall()
 
     # Close the database connection
