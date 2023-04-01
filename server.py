@@ -205,7 +205,7 @@ def company_data(company_id):
         on e.departmentid =  d.departmentid
         join location l
         on d.stateid = l.stateid and d.cityname = l.cityname
-        where e.companyid = :company.ID AND e.years = f.years;
+        where e.companyid = :f"%{company.id}%" AND e.years = f.years;
 
     """
     result = g.conn.execute(text(query), {'company_id': company_id})
