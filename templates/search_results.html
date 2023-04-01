@@ -13,7 +13,8 @@
     <tbody>
         {% for company in companies %}
             <tr>
-                <td><a href="/company/{{ company.ID }}">{{ company.ID }}</a></td>
+                <td><a href="/company?id={{ company.ID }}">{{ company.ID }}</a></td>
+
 
                 <td>{{ company.NAME }}</td>
                 <td>{{ company.HEADQUARTER }}</td>
