@@ -228,7 +228,7 @@ def filter_data():
     company_id = request.form['company_id']
 
     if filter_option_1 == 'Gender':
-        query = """SELECT e.*, d.cityname, d.stateid 
+        query = """SELECT e.*, d.cityname, d.stateid,d.departmentname
             FROM employee e 
             Join department d
             on e.departmentid = d.departmentid
