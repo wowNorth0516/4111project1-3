@@ -208,7 +208,7 @@ def company_data(company_id):
         where e.companyid = :company.ID AND e.years = f.years;
 
     """
-    result = g.conn.execute(text(query), {'company.ID': company_id})
+    result = g.conn.execute(text(query), {'company_id': company_id})
     data = result.fetchall()
 
     # Close the database connection
