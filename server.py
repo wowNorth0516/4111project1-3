@@ -212,27 +212,32 @@ def filter_data():
 
     return render_template('filtered_data.html', filtered_data=filtered_data, filter_option=filter_option)
 
-@app.route('/compare_data', methods=['POST'])
+@app.route('/compare_data', methods=['GET', 'POST'])
 def compare_data():
-    compare_option = request.form['compare-option']
-    company_id = request.form['company_id']
+    if request.method == 'POST':
+        compare_option = request.form['compare-option']
+        company_id = request.form['company_id']
+        
+        if compare_option == 'salary':
+            # Fetch salary data based on the company_id
+            query = "SELECT salary FROM employee WHERE companyid = %s"
+            g.conn.execute(query, (company_id,))
+            company_data = g.conn.fetchall()
+        elif compare_option == 'age':
+            # Fetch age data based on the company_id
+            query = "SELECT age FROM employee WHERE companyid = %s"
+            g.conn.execute(query, (company_id,))
+            company_data = g.conn.fetchall()
+        # Add more compare options here
+
+        # Fetch user's data for comparison
+        user_data = get_user_data(session['userid'], compare_option)
+
+        return render_template('comparison.html', company_data=company_data, user_data=user_data, compare_option=compare_option)
     
-    if compare_option == 'salary':
-        # Fetch salary data based on the company_id
-        query = "SELECT salary FROM employee WHERE companyid = %s"
-        g.conn.execute(query, (company_id,))
-        company_data = g.conn.fetchall()
-    elif compare_option == 'age':
-        # Fetch age data based on the company_id
-        query = "SELECT age FROM employee WHERE companyid = %s"
-        g.conn.execute(query, (company_id,))
-        company_data = g.conn.fetchall()
-    # Add more compare options here
-
-    # Fetch user's data for comparison
-    user_data = get_user_data(session['userid'], compare_option)
-
-    return render_template('comparison.html', company_data=company_data, user_data=user_data, compare_option=compare_option)
+    else:
+        # Render a template with a form for the user to enter their comparison criteria
+        return render_template('company_info.html')
 
 def get_user_data(user_id, compare_option):
     if compare_option == 'salary':
