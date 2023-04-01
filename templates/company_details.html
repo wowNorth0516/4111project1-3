@@ -1,4 +1,5 @@
 <table>
+<!-- </p>The Data for {%data.companyname%}</p> -->
   <thead>
     <tr>
       <th>Employee ID</th>
@@ -14,10 +15,11 @@
     <tr>
       <td>{{ row.employeeid }}</td>
       <td>{{ row.name }}</td>
+      <td>{{ row.gender }}</td>
       <td>{{ row.departmentname }}</td>
       <td>{{ row.city }}, {{ row.state }}</td>
       <td>{{ row.salary }}</td>
-      <td>{{ row.profit }}</td>
+      <td>{{ row.AnnualRevenue }}</td>
     </tr>
     {% endfor %}
   </tbody>
@@ -25,12 +27,11 @@
 <form id="filter-form" method="post" action="/filter_data">
   <label for="filter-option">Filter by:</label>
   <select name="filter-option" id="filter-option">
-    <option value="departments">Departments</option>
+    <option value="department">Department</option>
     <option value="positions">Positions</option>
     <option value="gender">Gender</option>
-    <option value="age_range">Age Range</option>
-    <option value="employee_data">Employee Data</option>
-    <option value="financial_data">Financial Data</option>
+    <option value="employee data">Employee Data</option>
+    <option value="Company AnnualRevenue">Financial Data</option>
   </select>
   <input type="hidden" name="company_id" value="{{ company.companyid }}" />
   <input type="submit" value="Apply" />
