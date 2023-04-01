@@ -213,7 +213,7 @@ def company_data(company_id):
     # Fetch the list of departments
     query = "SELECT * FROM department"
     result = g.conn.execute(text(query))
-    departments = [{"name": row.name} for row in result.fetchall()]
+    departments = [{"name": row.departmentname} for row in result.fetchall()]
 
     # Close the database connection
     result.close()
