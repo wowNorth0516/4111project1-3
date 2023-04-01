@@ -28,19 +28,11 @@
 <form id="filter-form" method="post" action="/filter_data">
   <label for="filter-option">Filter by:</label>
   <select name="filter-option" id="filter-option">
-    <option value="positions">Positions</option>
+    <option value="currentposition">Positions</option>
     <option value="gender">Gender</option>
     <option value="employee data">Employee Data</option>
     <option value="financial data">Financial Data</option>
   </select>
-  {% if filter_option == 'positions' %}
-  <label for="position-filter">Position:</label>
-  <select name="position-filter" id="position-filter">
-    {% for position in position_list %}
-      <option value="{{ position }}">{{ position }}</option>
-    {% endfor %}
-  </select>
-{% endif %}
   <input type="hidden" name="company_id" value="{{ data[0]['companyid'] }}" />
   <input type="submit" value="Apply" />
 </form>
