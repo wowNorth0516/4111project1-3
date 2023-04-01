@@ -191,7 +191,7 @@ def search_results():
 def company_data(company_id):
     # Fetch all the related data from the database using SQL JOIN statements
     query = """
-        SELECT e.*, d.stateid, d.cityname, f.annualrevenue, f.marketcapitalization 
+        SELECT e.*, d.*, f.annualrevenue, f.marketcapitalization 
         FROM employee e
         JOIN financialdata f
         ON e.companyid = f.companyid 
@@ -230,12 +230,21 @@ def filter_data():
     elif filter_option_1 == 'Financial Data':
         query = "SELECT * FROM financialdata WHERE companyid = :company_id AND years = :filter_option_2"
     filtered_data = g.conn.execute(text(query), {'company_id': company_id, 'filter_option_2': filter_option_2}).fetchall()
-    select_query = "SELECT * FROM company"
-    cursor = g.conn.execute(text(select_query))
+    select_query_1 = "SELECT * FROM company"
+    cursor = g.conn.execute(text(select_query_1))
     companies = [{"id": c.companyid, "name": c.companyname} for c in cursor.fetchall()]
     cursor.close()
+    select_query_2 = """
+    SELECT DISTINCT d.departmentid, d.departmentname
+    FROM department d
+    JOIN employee e ON d.departmentid = e.departmentid
+    WHERE e.companyid = :company_id
+"""
+    cursor = g.conn.execute(text(select_query_2), {'company_id': company_id})
+    departments = [{"id": d.departmentid, "name": d.departmentname} for d in cursor.fetchall()]
+    cursor.close()
     g.conn.close()
-    return render_template('filtered_data.html', filtered_data=filtered_data, filter_option_1=filter_option_1, filter_option_2=filter_option_2, company_id=company_id, companies=companies)
+    return render_template('filtered_data.html', filtered_data=filtered_data, filter_option_1=filter_option_1, filter_option_2=filter_option_2, company_id=company_id, companies=companies, departments=departments)
 
 @app.route('/compare_data', methods=['POST'])
 def compare_data():
