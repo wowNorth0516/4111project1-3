@@ -36,13 +36,11 @@
   {% if filter_option == 'positions' %}
   <label for="position-filter">Position:</label>
   <select name="position-filter" id="position-filter">
-    <option value="">--Select Position--</option>
-    {% for position in positions %}
-      <option value="{{ position[0] }}">{{ position[0] }}</option>
+    {% for position in position_list %}
+      <option value="{{ position }}">{{ position }}</option>
     {% endfor %}
   </select>
 {% endif %}
-
   <input type="hidden" name="company_id" value="{{ data[0]['companyid'] }}" />
   <input type="submit" value="Apply" />
 </form>
