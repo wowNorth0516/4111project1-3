@@ -187,7 +187,7 @@ def search_results():
     query = request.args.get('query')
     
     select_query = "SELECT * FROM company WHERE LOWER(companyname) = :query"
-    cursor = g.conn.execute(text(select_query), {'query': query.lower()})
+    cursor = g.conn.execute(text(select_query), {'query': f"%{query.lower()}%"})
     companies = [{"ID": c.companyid, "NAME": c.companyname, "HEADQUARTER": c.headquarter, "FOUNDINGDATE": c.foundingdate} for c in cursor.fetchall()]
     cursor.close()
 
