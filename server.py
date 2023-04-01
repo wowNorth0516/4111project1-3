@@ -195,19 +195,21 @@ def company_data(company_id):
         JOIN department ON employee.departmentid = department.departmentid
         JOIN location ON department.locationid = location.locationid
         JOIN financialdata ON employee.employeeid = financialdata.employeeid
-        WHERE employee.companyid = %s;
+        WHERE employee.companyid = :company_id;
     """
-    result = g.conn.execute(query, (company_id,))
-    data_temp = result.fetchall()
-    data = [{"Employee ID": c.employeeid, "Employee Name":c.employeename, "Gender":c.gender,
-             "City":c.city,"State":c.state, "Department Name":c.departmentname,
-             "Salary": c.salary, "Company Annual Revenue": c.annualrevenue} for c in data_temp.fetchall()]
+    result = g.conn.execute(text(query), {'company_id': company_id})
+    data = result.fetchall()
 
     # Close the database connection
     result.close()
+    g.conn.close()
 
     # Pass the data to the template for rendering
-    return render_template('company_details.html', data=data, query = query)
+    return render_template('company_data.html', data=data)
+
+# data = [{"Employee ID": c.employeeid, "Employee Name":c.employeename, "Gender":c.gender,
+#              "City":c.city,"State":c.state, "Department Name":c.departmentname,
+#              "Salary": c.salary, "Company Annual Revenue": c.annualrevenue} for c in data_temp.fetchall()]
 
 @app.route('/filter_data', methods=['POST'])
 def filter_data():
