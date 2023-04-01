@@ -191,7 +191,7 @@ def search_results():
 def company_details(company_id):
     # In a real application, you would fetch the company details from the database
     # using the company_id and render a template with the company information.
-    return f"Company details for company ID: {company_id}",render_template('filter_data.html')
+    return f"Company details for company ID: {company_id}",render_template('filtered_data.html')
 
 @app.route('/filter_data', methods=['POST'])
 def filter_data():
