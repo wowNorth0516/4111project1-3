@@ -197,16 +197,11 @@ def search_results():
 def company_data(company_id):
     # Fetch all the related data from the database using SQL JOIN statements
     query = """
-        SELECT e.*, d.*, f.annualrevenue, f.marketcapitalization 
-        FROM employee e
-        JOIN financialdata f
-        ON e.companyid = f.companyid 
-        join department d
-        on e.departmentid =  d.departmentid
-        join location l
-        on d.stateid = l.stateid and d.cityname = l.cityname
-        where e.companyid = :company_id AND e.years = f.years;
-
+        SELECT e.*, d.*, l.cityname, l.stateid
+    FROM employee e
+    JOIN department d ON e.departmentid = d.departmentid
+    JOIN location l ON d.stateid = l.stateid AND d.cityname = l.cityname
+    WHERE e.companyid = :company_id;
     """
     result = g.conn.execute(text(query), {'company_id': company_id})
     data = result.fetchall()
