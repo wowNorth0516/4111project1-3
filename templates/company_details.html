@@ -40,17 +40,14 @@
 <form id="filter-form" method="post" action="/filter_data">
   <label for="filter-option-1">Filter by:</label>
   <select name="filter-option-1" id="filter-option-1">
-    <option value="Deprtments">Departments</option>
-    <option value="Financial Data">Financial Data</option>
-    <option value="Positions">Positions</option>
-    <option value="Gender">Gender</option>
-  </select>
-  <label for="filter-option-2"></label>
-  <select name="filter-option-2" id="filter-option-2">
-    {% for department in departments %}
-      <option value="{{ department.name }}" {% if filter_option_2 == department.name %}selected{% endif %}>{{ department.name }}</option>
-      {% endfor %}
-  </select>
+    <option value="Gender" {% if filter_option_1 == 'Gender' %}selected{% endif %}>Gender</option>
+    <option value="Positions" {% if filter_option_1 == 'Positions' %}selected{% endif %}>Positions</option>
+    <option value="Financial Data" {% if filter_option_1 == 'Financial Data' %}selected{% endif %}>Financial Data</option>
+    <option value="Departments" {% if filter_option_1 == 'Departments' %}selected{% endif %}>Departments</option>
+</select>
+
+<select name="filter-option-2" id="filter-option-2">
+</select>
   <input type="hidden" name="company_id" value="{{ data[0]['companyid'] }}" />
   <input type="submit" value="Apply" />
 </form>
