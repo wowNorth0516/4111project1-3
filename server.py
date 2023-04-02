@@ -340,6 +340,7 @@ def review_data():
     WHERE c.companyid = :company_id
     """
     results = g.conn.execute(text(query), {'company_id': company_id}).fetchall()
+    results.close()
     return render_template("review.html", company_id=company_id, results=results)
 
 # Example of adding new data to the database
