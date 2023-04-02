@@ -201,13 +201,13 @@ def signup_employee():
             if result:
                 # Insert to user table
                 insert_query = "INSERT INTO Users (UserID, UserPSW) \
-                                VALUES (:UserID, :password)"
-                g.conn.execute(text(insert_query),{'UserID': username,'UserPSW': password})
+                                VALUES (:username, :password)"
+                g.conn.execute(text(insert_query),{'username': username,'password': password})
                 g.conn.commit()
                  # Insert to staff table
                 insert_query = "INSERT INTO Staff (UserID, EmployeeID) \
-                                VALUES (:UserID, :EmployeeID)"
-                g.conn.execute(text(insert_query), {'UserID': username,'EmployeeID':EmployeeID})
+                                VALUES (:username, :EmployeeID)"
+                g.conn.execute(text(insert_query), {'username': username,'EmployeeID':EmployeeID})
                 g.conn.commit()
                 return redirect(url_for('login'))
             else:
@@ -237,13 +237,13 @@ def signup_jobseeker():
             JobSeekerID = 'JS' + str(random.randint(10000, 99999))
             # Insert to user table
             insert_query = "INSERT INTO Users (UserID, UserPSW) \
-                            VALUES (:UserID, :password)"
-            g.conn.execute(text(insert_query),{'UserID': username,'UserPSW': password})
+                            VALUES (:username, :password)"
+            g.conn.execute(text(insert_query),{'username': username,'password': password})
             g.conn.commit()
             # Insert to jobseeker table
             insert_query = "INSERT INTO JobSeeker (UserID, JobSeekerID, Age, gender, DesiredPosition, DesiredSalary) \
-                            VALUES (:UserID, :JobSeekerID, :Age, :Gender, :DesiredPosition, :DesiredSalary)"
-            g.conn.execute(text(insert_query), {'UserID':username, 'JobSeekerID':JobSeekerID, 'Age':Age, 'Gender':Gender, 
+                            VALUES (:username, :JobSeekerID, :Age, :Gender, :DesiredPosition, :DesiredSalary)"
+            g.conn.execute(text(insert_query), {'username':username, 'JobSeekerID':JobSeekerID, 'Age':Age, 'Gender':Gender, 
                             'DesiredPosition':DesiredPosition, 'DesiredSalary':DesiredSalary})
             g.conn.commit()
             return redirect(url_for('login'))   
