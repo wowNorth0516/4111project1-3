@@ -6,7 +6,6 @@
 {% if filter_option_1 != 'Financial Data' %}
 <table>
     <tr>
-      <th>Company ID</th>
       <th>Employee ID</th>
       <th>Gender</th>
       <th>Years</th>
@@ -21,7 +20,6 @@
     </tr>
     {% for row in filtered_data %}
     <tr>
-      <td>{{ row.companyid }}</td>
       <td>{{ row.employeeid }}</td>
       <td>{{ row.gender }}</td>
       <td>{{ row.years }}</td>
