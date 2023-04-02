@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Reviews</title>
+  </head>
+  <body>
+    <h1>Reviews</h1>
+    <table>
+      <tr>
+        <th>ID</th>
+        <th>Rating</th>
+        <th>Content</th>
+      </tr>
+      {% for row in rows %}
+      <tr>
+        <td>{{ row[0] }}</td>
+        <td>{{ row[1] }}</td>
+        <td>{{ row[2] }}</td>
+      </tr>
+      {% endfor %}
+    </table>
+  </body>
+</html>

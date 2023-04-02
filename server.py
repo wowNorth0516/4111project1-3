@@ -329,16 +329,18 @@ def get_user_data(user_id, compare_option):
     g.conn.execute(query, (user_id,))
     return g.conn.fetchone()
 
-# This is an example of a different path.  You can see it at:
-# 
-#     localhost:8111/another
-#
-# Notice that the function name is another() rather than index()
-# The functions for each app.route need to have different names
-#
-@app.route('/another')
-def another():
-	return render_template("another.html")
+@app.route('/review')
+def review_data():
+    company_id = request.args.get('company_id')  # get the company_id from the hyperlink
+    query = f"""
+    SELECT content
+    FROM review
+    WHERE content LIKE '%{company_id}%'
+    """
+    results = g.conn.execute(text(query), {'company_id': company_id}).fetchall()
+    # execute the query and return the results
+    # (code for executing the query depends on the database library you are using)
+    return render_template("review.html")
 
 
 # Example of adding new data to the database
