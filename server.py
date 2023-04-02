@@ -100,6 +100,7 @@ def do_login():
             error_msg = "Incorrect password, please try again."
             return render_template('login.html', error_msg=error_msg)
         else:
+            session['username'] = username
             return redirect(url_for('search', username=username))
 
 
@@ -342,7 +343,7 @@ def get_user_data(user_id, compare_option):
     g.conn.execute(query, (user_id,))
     return g.conn.fetchone()
 
-@app.route('/review')
+@app.route('/review', methods=['GET', 'POST'])
 def review_data():
     company_id = request.args.get('company_id')
     query = """
@@ -353,6 +354,41 @@ def review_data():
     WHERE c.companyid = :company_id
     """
     results = g.conn.execute(text(query), {'company_id': company_id}).fetchall()
+    
+    if request.method == 'POST':
+        add_review = request.form['add_review']
+        rating = request.form['rating']
+        employeeid = request.form['EmployeeID']
+        employeeidquery = """
+            select distinct employeeid
+            from staff 
+            where userid = :username
+        """
+        employeeid = g.conn.execute(text(employeeidquery), {'username': session["username"]}).fetchall()[0][0]
+        
+        if employeeid:
+            reviewid = "REV" + "{:03d}".format(random.randint(0, 999))
+            companynamequery = """
+                select companyname 
+                from company
+                where companyid = :company_id
+                """
+            companyname = g.conn.execute(text(companynamequery), {'company_id': company_id}).fetchall()[0][0]
+            query ="""INSERT INTO review (reviewid, companyname, rating, content) VALUES (:reviewid, :companyname, :rating, :add_review)"""
+            g.conn.execute(text(query), {'reviewid': reviewid, 'companyname': companyname, 'rating': rating, 'add_review': add_review})
+            query = """
+                SELECT r.*
+                FROM review r
+                JOIN company c 
+                ON c.companyname = r.companyname
+                WHERE c.companyid = :company_id
+                """
+            results = g.conn.execute(text(query), {'company_id': company_id}).fetchall()
+            return render_template("review.html", company_id=company_id, results=results)
+        else:
+            error_msg = "Only employee can give comment"
+            return render_template('review.html', error_msg=error_msg,company_id=company_id, results=results)
+            
     return render_template("review.html", company_id=company_id, results=results)
 
 # Example of adding new data to the database

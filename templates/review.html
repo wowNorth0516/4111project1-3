@@ -21,5 +21,10 @@
       </tr>
       {% endfor %}
     </table>
+    <form method="POST" action="/add">
+      <p>Give Comment for the Company: <input type="text" name="add_review"></p>
+      <p>Rate the company (0-10): <input type="number" name="rating" min="0" max="10"></p>
+      <input type="submit" value="Add">
+    </form>
   </body>
 </html>
