@@ -209,7 +209,7 @@ def company_data(company_id):
     """
     result = g.conn.execute(text(query1), {'company_id': company_id})
     data = result.fetchall()
-    data.close()
+    result.close()
 
     # Fetch the list of departments
     query2 = """
