@@ -115,69 +115,6 @@ def is_employee_check():
     else:
         return render_template('is_employee_check.html')
 
-# @app.route('/signup', methods=['GET', 'POST'])
-# def signup():
-#     if request.method == 'POST':
-#         username = escape(request.form['username'])
-#         password = escape(request.form['password'])
-#         is_employee = escape(request.form.get('is_employee'))
-#         if is_employee == 'Yes':
-#              # Check if user already exists
-#             user_exist_query = "SELECT * FROM Users WHERE UserID = :username"
-#             cursor = g.conn.execute(text(user_exist_query), {'username': username})
-#             user_exist = cursor.fetchone()
-#             cursor.close()
-#             if user_exist is not None:
-#                 error_msg = "Username already exists, please log in or choose a different username."
-#                 return render_template('login.html', error_msg=error_msg)
-#             else:
-#                 EmployeeID = escape(request.form['EmployeeID'])
-#                 select_query = "SELECT * FROM Employee WHERE EmployeeID = :EmployeeID"
-#                 cursor = g.conn.execute(text(select_query), {'EmployeeID':EmployeeID})
-#                 result = cursor.fetchone()
-#                 cursor.close()
-#                 if result:
-#                     # Insert to staff table
-#                     insert_query = "INSERT INTO Staff (UserID, EmployeeID) \
-#                                     VALUES (:UserID, :EmployeeID)"
-#                     g.conn.execute(text(insert_query), {'UserID': username,'EmployeeID':EmployeeID})
-#                     g.conn.commit()
-#                     return redirect(url_for('login'))
-#                 else:
-#                     error_msg = "Invalid employee ID, please check and try again."
-#                     return render_template('signup_employee.html', error_msg=error_msg)
-#         else:
-#             # Check if user already exists
-#             user_exist_query = "SELECT * FROM Users WHERE UserID = :username"
-#             cursor = g.conn.execute(text(user_exist_query), {'username': username})
-#             user_exist = cursor.fetchone()
-#             cursor.close()
-#             if user_exist is not None:
-#                 error_msg = "Username already exists, please log in or choose a different username."
-#                 return render_template('login.html', error_msg=error_msg)
-#             else:
-#                 Age = escape(request.form['Age'])
-#                 Gender = escape(request.form['Gender'])
-#                 DesiredPosition = escape(request.form['DesiredPosition'])
-#                 DesiredSalary = escape(request.form['DesiredSalary'])
-#                 # Generate random jobseeker ID
-#                 JobSeekerID = 'JS' + str(random.randint(10000, 99999))
-#                 # Insert to jobseeker table
-#                 insert_query = "INSERT INTO JobSeeker (UserID, JobSeekerID, Age, gender, DesiredPosition, DesiredSalary) \
-#                                 VALUES (:UserID, :JobSeekerID, :Age, :Gender, :DesiredPosition, :DesiredSalary)"
-#                 g.conn.execute(text(insert_query), {'UserID':username, 'JobSeekerID':JobSeekerID, 'Age':Age, 'Gender':Gender, 
-#                                 'DesiredPosition':DesiredPosition, 'DesiredSalary':DesiredSalary})
-#                 g.conn.commit()
-#                 # Insert to user table
-#                 insert_query = "INSERT INTO Users (UserID, UserPSW) \
-#                                 VALUES (:UserID, :password)"
-#                 g.conn.execute(text(insert_query),{'UserID': username,'UserPSW': password})
-#                 g.conn.commit()
-                
-#                 return redirect(url_for('login'))   
-#     else:
-#         return render_template('signup.html')
-
 @app.route('/signup/employee', methods=['GET', 'POST'])
 def signup_employee():
     if request.method == 'POST':
