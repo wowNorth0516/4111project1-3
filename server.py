@@ -230,10 +230,10 @@ def company_data(company_id):
 #              "Salary": c.salary, "Company Annual Revenue": c.annualrevenue} for c in data_temp.fetchall()]
 
 @app.route('/filter_data', methods=['POST'])
-def filter_data():
+def filter_data(company_id):
     filter_option_1 = request.form['filter-option-1']
     filter_option_2 = request.form['filter-option-2']
-    company_id = request.form['company_id']
+    # company_id = request.form['company_id']
     if filter_option_1 is not None or filter_option_2 is not None:
         if filter_option_1 == 'Gender':
             query = """SELECT e.*, d.*
