@@ -342,7 +342,7 @@ def review_data(company_id):
     results = g.conn.execute(text(query), {'company_id': company_id}).fetchall()
     # execute the query and return the results
     # (code for executing the query depends on the database library you are using)
-    return render_template("review.html")
+    return render_template("review.html", company_id = company_id)
 
 # Example of adding new data to the database
 # @app.route('/add', methods=['POST'])
