@@ -121,32 +121,38 @@ def signup():
         username = escape(request.form['username'])
         password = escape(request.form['password'])
         is_employee = escape(request.form.get('is_employee'))
-        
-        # Check if user already exists
-        select_query = "SELECT * FROM Users WHERE UserID = :UserID"
-        cursor = g.conn.execute(text(select_query), {'UserID': username})
-        result = cursor.fetchone()
-        cursor.close()
-        if result:
-            error_msg = "Username already exists, please log in or choose a different username."
-            return render_template('login.html', error_msg=error_msg)
-        
         if is_employee == 'Yes':
-            EmployeeID = escape(request.form['EmployeeID'])
-            select_query = "SELECT * FROM Employee WHERE EmployeeID = :EmployeeID"
-            cursor = g.conn.execute(text(select_query), {'EmployeeID':EmployeeID})
-            result = cursor.fetchone()
+             # Check if user already exists
+            user_exist_query = "SELECT * FROM Users WHERE UserID = :username"
+            cursor = g.conn.execute(text(user_exist_query), {'username': username})
+            user_exist = cursor.fetchone()
             cursor.close()
-            if result:
-                # Insert to staff table
-                insert_query = "INSERT INTO Staff (UserID, EmployeeID) \
-                                VALUES (:UserID, :EmployeeID)"
-                g.conn.execute(text(insert_query), {'UserID': username,'EmployeeID':EmployeeID})
-                return redirect(url_for('login'))
+            if user_exist is not None:
+                error_msg = "Username already exists, please log in or choose a different username."
+                return render_template('login.html', error_msg=error_msg)
             else:
-                error_msg = "Invalid employee ID, please check and try again."
-                return render_template('signup_employee.html', error_msg=error_msg)
+                EmployeeID = escape(request.form['EmployeeID'])
+                select_query = "SELECT * FROM Employee WHERE EmployeeID = :EmployeeID"
+                cursor = g.conn.execute(text(select_query), {'EmployeeID':EmployeeID})
+                result = cursor.fetchone()
+                cursor.close()
+                if result:
+                    # Insert to staff table
+                    insert_query = "INSERT INTO Staff (UserID, EmployeeID) \
+                                    VALUES (:UserID, :EmployeeID)"
+                    g.conn.execute(text(insert_query), {'UserID': username,'EmployeeID':EmployeeID})
+                    g.conn.commit()
+                    return redirect(url_for('login'))
+                else:
+                    error_msg = "Invalid employee ID, please check and try again."
+                    return render_template('signup_employee.html', error_msg=error_msg)
         else:
+            # Check if user already exists
+            user_exist_query = "SELECT * FROM Users WHERE UserID = :username"
+            cursor = g.conn.execute(text(user_exist_query), {'username': username})
+            user_exist = cursor.fetchone()
+            cursor.close()
+
             Age = escape(request.form['Age'])
             Gender = escape(request.form['Gender'])
             DesiredPosition = escape(request.form['DesiredPosition'])
@@ -158,26 +164,17 @@ def signup():
                             VALUES (:UserID, :JobSeekerID, :Age, :Gender, :DesiredPosition, :DesiredSalary)"
             g.conn.execute(text(insert_query), {'UserID':username, 'JobSeekerID':JobSeekerID, 'Age':Age, 'Gender':Gender, 
                             'DesiredPosition':DesiredPosition, 'DesiredSalary':DesiredSalary})
+            g.conn.commit()
             # Insert to user table
             insert_query = "INSERT INTO Users (UserID, UserPSW) \
                             VALUES (:UserID, :password)"
             g.conn.execute(text(insert_query),{'UserID': username,'UserPSW': password})
+            g.conn.commit()
             
-            return redirect(url_for('login'))
-        
+            return redirect(url_for('login'))   
     else:
         return render_template('signup.html')
 
-# @app.route('/initial/<username>')
-# def success(username):
-#     select_query = "SELECT * from FinancialData"
-#     cursorX = g.conn.execute(text(select_query))
-
-#     # Retrieve the data from the cursor
-#     data = cursorX.fetchall()
-
-#     context = {'username': username, 'data': data}
-#     return render_template('initial.html', **context)
 
 @app.route('/search')
 def search():
@@ -401,21 +398,6 @@ def review_data():
             return render_template('review.html', error_msg=error_msg,company_id=company_id, results=results)
             
     return render_template("review.html", company_id=company_id, results=results)
-
-# Example of adding new data to the database
-# @app.route('/add', methods=['POST'])
-# def add():
-# 	# accessing form inputs from user
-# 	name = request.form['name']
-	
-# 	# passing params in for each variable into query
-# 	params = {}
-# 	params["new_name"] = name
-# 	g.conn.execute(text('INSERT INTO test(name) VALUES (:new_name)'), params)
-# 	g.conn.commit()
-# 	return redirect('/')
-#
-
 
 
 if __name__ == "__main__":
