@@ -285,16 +285,7 @@ def compare_data():
     # Fetch data for company 2 based on the filter options
     data_company_2 = fetch_filtered_data(company_id_2, filter_option_1, filter_option_2)
 
-    select_query_1 = "SELECT * FROM company"
-    cursor = g.conn.execute(text(select_query_1))
-    companies = [{"id": c.companyid, "name": c.companyname} for c in cursor.fetchall()]
-    cursor.close()
-    select_query_2 = "SELECT DISTINCT d.departmentid, d.departmentname FROM department d JOIN employee e ON d.departmentid = e.departmentid WHERE e.companyid = :company_id"
-    cursor = g.conn.execute(text(select_query_2), {'company_id': company_id})
-    departments = [{"id": d.departmentid, "name": d.departmentname} for d in cursor.fetchall()]
-    cursor.close()
-    g.conn.close()
-    return render_template('comparison.html', data_company_1=data_company_1, data_company_2=data_company_2, filter_option_1=filter_option_1, filter_option_2=filter_option_2, companies = companies, departments = departments)
+    return render_template('comparison.html', data_company_1=data_company_1, data_company_2=data_company_2, filter_option_1=filter_option_1, filter_option_2=filter_option_2)
 
 def fetch_filtered_data(company_id, filter_option_1, filter_option_2):
     if filter_option_1 == 'Gender':
