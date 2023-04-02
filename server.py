@@ -331,7 +331,7 @@ def get_user_data(user_id, compare_option):
 
 @app.route('/review')
 def review_data():
-    company_id = request.form['company_id']  
+    company_id = request.args.get('company_id')
     query = f"""
     SELECT content
     FROM review
@@ -341,7 +341,6 @@ def review_data():
     # execute the query and return the results
     # (code for executing the query depends on the database library you are using)
     return render_template("review.html")
-
 
 # Example of adding new data to the database
 # @app.route('/add', methods=['POST'])
