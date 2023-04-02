@@ -333,7 +333,7 @@ def get_user_data(user_id, compare_option):
 def review_data():
     company_id = request.args.get('company_id')
     query = f"""
-    SELECT content
+    SELECT r.*
     FROM review r
     Join company c 
     on c.companyname = r.companyname
