@@ -358,7 +358,6 @@ def review_data():
     if request.method == 'POST':
         add_review = request.form['add_review']
         rating = request.form['rating']
-        employeeid = request.form['EmployeeID']
         employeeidquery = """
             select distinct employeeid
             from staff 
