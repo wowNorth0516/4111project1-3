@@ -229,7 +229,7 @@ def company_data(company_id):
 #              "City":c.city,"State":c.state, "Department Name":c.departmentname,
 #              "Salary": c.salary, "Company Annual Revenue": c.annualrevenue} for c in data_temp.fetchall()]
 
-@app.route('/filter_data/<company_id>', methods=['POST'])
+@app.route('/filter_data', methods=['POST'])
 def filter_data():
     filter_option_1 = request.form['filter-option-1']
     filter_option_2 = request.form['filter-option-2']
