@@ -230,7 +230,7 @@ def company_data(company_id):
 #              "Salary": c.salary, "Company Annual Revenue": c.annualrevenue} for c in data_temp.fetchall()]
 
 @app.route('/filter_data/<company_id>', methods=['POST'])
-def filter_data(company_id):
+def filter_data():
     filter_option_1 = request.form['filter-option-1']
     filter_option_2 = request.form['filter-option-2']
     company_id = request.form['company_id']
@@ -265,7 +265,9 @@ def filter_data(company_id):
         departments = [{"id": d.departmentid, "name": d.departmentname} for d in cursor.fetchall()]
         cursor.close()
         g.conn.close()
-        return render_template('filtered_data.html', filtered_data=filtered_data, filter_option_1=filter_option_1, filter_option_2=filter_option_2, company_id=company_id, companies=companies, departments=departments)
+        return render_template('filtered_data.html', filtered_data=filtered_data, 
+                               filter_option_1=filter_option_1, filter_option_2=filter_option_2, 
+                               company_id=company_id, companies=companies, departments=departments)
     else:
         return redirect(url_for('company_details', company_id=company_id))
 
