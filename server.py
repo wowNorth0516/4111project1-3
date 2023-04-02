@@ -27,7 +27,7 @@ from collections import defaultdict
 
 tmpl_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'templates')
 app = Flask(__name__, template_folder=tmpl_dir)
-
+app.secret_key = 'your-secret-key'
 
 DATABASE_USERNAME = "yy3262"
 DATABASE_PASSWRD = "2893"
