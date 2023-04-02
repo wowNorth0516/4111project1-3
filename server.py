@@ -386,6 +386,7 @@ def review_data():
                 INSERT INTO review (reviewid, companyname, rating, content) VALUES (:reviewid, :companyname, :rating, :add_review)
             """
             g.conn.execute(text(query), {'reviewid': reviewid, 'companyname': companyname, 'rating': rating, 'add_review': add_review})
+            g.conn.commit()
             query = """
                 SELECT r.*
                 FROM review r
