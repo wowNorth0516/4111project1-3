@@ -358,16 +358,16 @@ def review_data():
     if request.method == 'POST':
         add_review = request.form['add_review']
         rating = request.form['rating']
-        employeeidquery = """
-            select distinct employeeid
+        query = """
+            select distinct employeeid,c.companyname
             from staff 
-            where userid = :username
+            join company c
+            on staff.companyid = c.companyid
+            where userid = :username and c.companyid = :company_id
         """
-        employeeid = g.conn.execute(text(employeeidquery), {'username': session["username"]}).fetchone()
+        result1 = g.conn.execute(text(query), {'username': session["username"],'company_id': company_id}).fetchone()
 
-        if employeeid is not None:
-            employeeid = employeeid[0]
-
+        if result1 is not None:
             # Generate unique review id
             while True:
                 reviewid = "REV" + "{:03d}".format(random.randint(0, 999))
