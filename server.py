@@ -253,7 +253,7 @@ def filter_data():
                 FROM employee e
                 JOIN department d
                 ON e.departmentid = d.departmentid
-                WHERE e.companyid = :company_id AND e.departmentname = :filter_option_2"""
+                WHERE e.companyid = :company_id AND d.departmentname = :filter_option_2"""
         elif  filter_option_1 == 'Year':
             query = """SELECT e.*, d.departmentname, d.stateid, d.cityname
                 FROM employee e
