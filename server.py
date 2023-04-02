@@ -329,20 +329,17 @@ def get_user_data(user_id, compare_option):
     g.conn.execute(query, (user_id,))
     return g.conn.fetchone()
 
-@app.route('/review')
+@app.route('/review/<company_id>')
 def review_data(company_id):
-    company_id = request.form['company_id']
     query = """
     SELECT r.*
     FROM review r
-    Join company c 
-    on c.companyname = r.companyname
+    JOIN company c 
+    ON c.companyname = r.companyname
     WHERE c.companyid = :company_id
     """
     results = g.conn.execute(text(query), {'company_id': company_id}).fetchall()
-    # execute the query and return the results
-    # (code for executing the query depends on the database library you are using)
-    return render_template("review.html", company_id = company_id)
+    return render_template("review.html", company_id=company_id, results=results)
 
 # Example of adding new data to the database
 # @app.route('/add', methods=['POST'])
