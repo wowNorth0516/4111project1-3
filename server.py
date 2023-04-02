@@ -122,7 +122,7 @@ def signup_employee():
         password = escape(request.form['password'])
         EmployeeID = escape(request.form['EmployeeID'])
         
-        # Check if user already exists
+        # Check if user already exists t
         user_exist_query = "SELECT * FROM Users WHERE UserID = :username"
         cursor = g.conn.execute(text(user_exist_query), {'username': username})
         user_exist = cursor.fetchone()
