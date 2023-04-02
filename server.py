@@ -196,8 +196,8 @@ def search_results():
 @app.route('/company/<company_id>')
 def company_data(company_id):
     # Fetch all the related data from the database using SQL JOIN statements
-    query1 = """
-       SELECT e.*, d.departmentname, d.stateid, d.cityname, f.annualrevenue, f.marketcapitalization 
+    query = """
+       SELECT e.*, distinct d.departmentname, d.stateid, d.cityname, f.annualrevenue, f.marketcapitalization 
         FROM employee e
         JOIN financialdata f
         ON e.companyid = f.companyid and e.years = f.years
@@ -207,20 +207,9 @@ def company_data(company_id):
         on d.stateid = l.stateid and d.cityname = l.cityname
         where e.companyid = :company_id AND e.years = f.years;
     """
-    result = g.conn.execute(text(query1), {'company_id': company_id})
+    result = g.conn.execute(text(query), {'company_id': company_id})
     data = result.fetchall()
-    result.close()
-
-    # Fetch the list of departments
-    query2 = """
-    SELECT DISTINCT d.departmentname
-    FROM department d
-    JOIN employee e ON d.departmentid = e.departmentid
-    WHERE e.companyid = :company_id
-    """
-    result = g.conn.execute(text(query2), {'company_id': company_id})
     departments = [{"name": row.departmentname} for row in result.fetchall()]
-    # Close the database connection
     result.close()
 
     # Pass the data and departments to the template for rendering
