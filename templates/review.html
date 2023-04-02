@@ -11,7 +11,6 @@
         <th>Company Name</th>
         <th>Rating</th>
         <th>Content</th>
-        <th>Action</th>
       </tr>
       {% for row in results %}
       <tr>
@@ -19,11 +18,10 @@
         <td>{{ row.companyname }}</td>
         <td>{{ row.rating }}</td>
         <td>{{ row.content }}</td>
-        <td><a href="/edit/{{row.reviewid}}">Edit</a></td>
       </tr>
       {% endfor %}
     </table>
-    <form method="POST" action="/add">
+    <form method="POST" action="#/">
       <p>Give Comment for the Company: <input type="text" name="add_review"></p>
       <p>Rate the company (0-10): <input type="number" name="rating" min="0" max="10"></p>
       <input type="submit" value="Add">
