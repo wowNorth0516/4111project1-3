@@ -416,10 +416,8 @@ def review_data():
             userid = session['username']
             employeeid_query = """
                 select employeeid
-                from employee
-                join staff
-                on staff.employeeid = employee.employeeid
-                where staff.userid = :userid
+                from staff
+                where userid = :userid
             """
             employeeid = g.conn.execute(text(employeeid_query), {'userid': userid}).fetchall()[0]
 
