@@ -47,13 +47,16 @@
   </select>
   <label for="filter-option-2"></label>
   <select name="filter-option-2" id="filter-option-2">
+    {% for department in departments %}
+      <option value="{{ department.name }}" {% if filter_option_2 == department.name %}selected{% endif %}>{{ department.name }}</option>
+      {% endfor %}
   </select>
   <input type="hidden" name="company_id" value="{{ data[0]['companyid'] }}" />
   <input type="submit" value="Apply" />
 </form>
 <script>
   document.getElementById("filter-option-1").addEventListener("change", function() {
-    
+    var filterOption1 = this.value;
     var filterOption2 = document.getElementById("filter-option-2");
     
     // Remove existing options in filter-option-2
@@ -67,3 +70,4 @@
       filterOption2.innerHTML = "<option value='2018'>2018</option><option value='2019'>2019</option><option value='2020'>2020</option><option value='2021'>2021</option><option value='2022'>2022</option>";
     }
   });
+</script>
