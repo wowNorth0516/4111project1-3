@@ -145,12 +145,12 @@ def signup_employee():
                 companyid_query = """
                     select companyid
                     from employee
-                    where employeeid = :employeeid
+                    where EmployeeID = :EmployeeID
                 """
                 cursor = g.conn.execute(text(companyid_query), {'EmployeeID':EmployeeID})
                 companyid = cursor.fetchone()
                 cursor.close()
-                insert_query = "INSERT INTO Staff (UserID, EmployeeID) \
+                insert_query = "INSERT INTO Staff (UserID, EmployeeID, CompanyID) \
                                 VALUES (:username, :EmployeeID,:companyid)"
                 g.conn.execute(text(insert_query), {'username': username,'EmployeeID':EmployeeID, 'companyid':companyid})
                 g.conn.commit()
