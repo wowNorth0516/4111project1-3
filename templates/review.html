@@ -11,6 +11,7 @@
         <th>Company Name</th>
         <th>Rating</th>
         <th>Content</th>
+        <th>Action</th>
       </tr>
       {% for row in results %}
       <tr>
@@ -18,6 +19,7 @@
         <td>{{ row.companyname }}</td>
         <td>{{ row.rating }}</td>
         <td>{{ row.content }}</td>
+        <td><a href="/edit/{{row.reviewid}}">Edit</a></td>
       </tr>
       {% endfor %}
     </table>
