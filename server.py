@@ -177,17 +177,8 @@ def signup_jobseeker():
             Gender = escape(request.form['Gender'])
             DesiredPosition = escape(request.form['DesiredPosition'])
             DesiredSalary = escape(request.form['DesiredSalary'])
-            if Age is not int :
-                error_msg = "Age must be integer"
-                return render_template('signup.html', error_msg=error_msg)
-            elif Gender != 'Female' or Gender != 'Male':
-                error_msg = "Age must be integer"
-                return render_template('signup.html', error_msg=error_msg)
-            elif DesiredPosition is not str:
-                error_msg = "Desired Position must be string"
-                return render_template('signup.html', error_msg=error_msg)
-            elif DesiredSalary is not int:
-                error_msg = "Desired Salary must be int"
+            if Age is not int or Gender != 'Female' or Gender != 'Male' or DesiredPosition is not str or DesiredSalary is not int:
+                error_msg = "Please check your entry: Age must be integer, Gender must be Female or Male, Desired Position must be charactor, Desired Salary must be integer"
                 return render_template('signup.html', error_msg=error_msg)
             else:
                 # Generate random jobseeker ID
