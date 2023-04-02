@@ -154,7 +154,7 @@ def signup_employee():
                                 VALUES (:username, :EmployeeID,:companyid)"
                 g.conn.execute(text(insert_query), {'username': username,'EmployeeID':EmployeeID, 'companyid':companyid[0]})
                 g.conn.commit()
-                return redirect(url_for('do_login'),code=307)
+                return redirect(url_for('index'),code=307)
             else:
                 error_msg = "Invalid employee ID, please check and try again."
                 return render_template('signup_employee.html', error_msg=error_msg)
@@ -177,20 +177,33 @@ def signup_jobseeker():
             Gender = escape(request.form['Gender'])
             DesiredPosition = escape(request.form['DesiredPosition'])
             DesiredSalary = escape(request.form['DesiredSalary'])
-            # Generate random jobseeker ID
-            JobSeekerID = 'JS' + str(random.randint(10000, 99999))
-            # Insert to user table
-            insert_query = "INSERT INTO Users (UserID, UserPSW) \
-                            VALUES (:username, :password)"
-            g.conn.execute(text(insert_query),{'username': username,'password': password})
-            g.conn.commit()
-            # Insert to jobseeker table
-            insert_query = "INSERT INTO JobSeeker (UserID, JobSeekerID, Age, gender, DesiredPosition, DesiredSalary) \
-                            VALUES (:username, :JobSeekerID, :Age, :Gender, :DesiredPosition, :DesiredSalary)"
-            g.conn.execute(text(insert_query), {'username':username, 'JobSeekerID':JobSeekerID, 'Age':Age, 'Gender':Gender, 
-                            'DesiredPosition':DesiredPosition, 'DesiredSalary':DesiredSalary})
-            g.conn.commit()
-            return redirect(url_for('do_login'),code=307)   
+            if Age is not int :
+                error_msg = "Age must be integer"
+                return render_template('signup.html', error_msg=error_msg)
+            elif Gender != 'Female' or Gender != 'Male':
+                error_msg = "Age must be integer"
+                return render_template('signup.html', error_msg=error_msg)
+            elif DesiredPosition is not str:
+                error_msg = "Desired Position must be string"
+                return render_template('signup.html', error_msg=error_msg)
+            elif DesiredSalary is not int:
+                error_msg = "Desired Salary must be int"
+                return render_template('signup.html', error_msg=error_msg)
+            else:
+                # Generate random jobseeker ID
+                JobSeekerID = 'JS' + str(random.randint(10000, 99999))
+                # Insert to user table
+                insert_query = "INSERT INTO Users (UserID, UserPSW) \
+                                VALUES (:username, :password)"
+                g.conn.execute(text(insert_query),{'username': username,'password': password})
+                g.conn.commit()
+                # Insert to jobseeker table
+                insert_query = "INSERT INTO JobSeeker (UserID, JobSeekerID, Age, gender, DesiredPosition, DesiredSalary) \
+                                VALUES (:username, :JobSeekerID, :Age, :Gender, :DesiredPosition, :DesiredSalary)"
+                g.conn.execute(text(insert_query), {'username':username, 'JobSeekerID':JobSeekerID, 'Age':Age, 'Gender':Gender, 
+                                'DesiredPosition':DesiredPosition, 'DesiredSalary':DesiredSalary})
+                g.conn.commit()
+                return redirect(url_for('index'),code=307)   
     else:
         return render_template('signup.html')
 
