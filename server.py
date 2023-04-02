@@ -334,8 +334,10 @@ def review_data():
     company_id = request.args.get('company_id')
     query = f"""
     SELECT content
-    FROM review
-    WHERE content LIKE '%{company_id}%'
+    FROM review r
+    Join company c 
+    on c.companyname = r.companyname
+    WHERE c.companyid = :company_id
     """
     results = g.conn.execute(text(query), {'company_id': company_id}).fetchall()
     # execute the query and return the results
