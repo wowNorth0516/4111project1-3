@@ -209,7 +209,7 @@ def signup_employee():
                                 VALUES (:username, :EmployeeID)"
                 g.conn.execute(text(insert_query), {'username': username,'EmployeeID':EmployeeID})
                 g.conn.commit()
-                return redirect(url_for('login'))
+                return redirect(url_for('do_login'))
             else:
                 error_msg = "Invalid employee ID, please check and try again."
                 return render_template('signup_employee.html', error_msg=error_msg)
@@ -227,7 +227,7 @@ def signup_jobseeker():
         cursor.close()
         if user_exist is not None:
             error_msg = "Username already exists, please log in or choose a different username."
-            return render_template('login.html', error_msg=error_msg)
+            return render_template('do_login.html', error_msg=error_msg)
         else:
             Age = escape(request.form['Age'])
             Gender = escape(request.form['Gender'])
@@ -246,7 +246,7 @@ def signup_jobseeker():
             g.conn.execute(text(insert_query), {'username':username, 'JobSeekerID':JobSeekerID, 'Age':Age, 'Gender':Gender, 
                             'DesiredPosition':DesiredPosition, 'DesiredSalary':DesiredSalary})
             g.conn.commit()
-            return redirect(url_for('login'))   
+            return redirect(url_for('do_login'))   
     else:
         return render_template('signup.html')
 
