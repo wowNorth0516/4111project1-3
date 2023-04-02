@@ -331,7 +331,7 @@ def get_user_data(user_id, compare_option):
 
 @app.route('/review')
 def review_data():
-    company_id = request.args.get('company_id')  # get the company_id from the hyperlink
+    company_id = request.form['company_id']  
     query = f"""
     SELECT content
     FROM review
