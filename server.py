@@ -143,10 +143,10 @@ def signup_employee():
                 g.conn.commit()
                  # Insert to staff table
                 insert_query = "INSERT INTO Staff (UserID, EmployeeID) \
-                                VALUES (:username, :EmployeeID)"
+                                VALUES (:username, :EmployeeID,:companyid,)"
                 g.conn.execute(text(insert_query), {'username': username,'EmployeeID':EmployeeID})
                 g.conn.commit()
-                return redirect(url_for('do_login'))
+                return redirect(url_for('do_login'),code=307, method='POST')
             else:
                 error_msg = "Invalid employee ID, please check and try again."
                 return render_template('signup_employee.html', error_msg=error_msg)
@@ -183,7 +183,7 @@ def signup_jobseeker():
             g.conn.execute(text(insert_query), {'username':username, 'JobSeekerID':JobSeekerID, 'Age':Age, 'Gender':Gender, 
                             'DesiredPosition':DesiredPosition, 'DesiredSalary':DesiredSalary})
             g.conn.commit()
-            return redirect(url_for('do_login'))   
+            return redirect(url_for('do_login'),code=307, method='POST')   
     else:
         return render_template('signup.html')
 
