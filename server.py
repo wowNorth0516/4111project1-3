@@ -329,8 +329,9 @@ def get_user_data(user_id, compare_option):
     g.conn.execute(query, (user_id,))
     return g.conn.fetchone()
 
-@app.route('/review/<company_id>')
-def review_data(company_id):
+@app.route('/review')
+def review_data():
+    company_id = request.form['company_id']
     query = """
     SELECT r.*
     FROM review r
