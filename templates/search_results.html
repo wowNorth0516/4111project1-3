@@ -1,6 +1,6 @@
 <html>
 <h2>Search Results</h2>
-<p>Results for query "{{ query }}":</p >
+<p>Results for query "{{ query }}":</p>
 <table class="table">
     <thead>
         <tr>
@@ -14,13 +14,17 @@
         {% for company in companies %}
             <tr>
                 <td><a href="/company/{{ company.ID }}">{{ company.ID }}</a></td>
-
                 <td>{{ company.NAME }}</td>
                 <td>{{ company.HEADQUARTER }}</td>
                 <td>{{ company.FOUNDINGDATE }}</td>
+                <td>
+                    <form action="{{ url_for('company_data', company_id=company.ID) }}" method="get">
+                        <input type="hidden" name="company_id" value="{{ company.ID }}" />
+                        <button type="submit" class="btn btn-primary">View Details</button>
+                    </form>
+                </td>
             </tr>
         {% endfor %}
     </tbody>
-</table>   
-<input type="hidden" name="company_id" value="{{ company.id }}" />
+</table> 
 </html>
