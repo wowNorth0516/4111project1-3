@@ -260,6 +260,12 @@ def filter_data():
                 JOIN department d
                 ON e.departmentid = d.departmentid
                 WHERE e.companyid = :company_id AND years = :filter_option_2"""
+        elif  filter_option_1 == 'State':
+            query = """SELECT e.*, d.departmentname, d.stateid, d.cityname
+                FROM employee e
+                JOIN department d
+                ON e.departmentid = d.departmentid
+                WHERE e.companyid = :company_id AND d.stateid = :filter_option_2"""
         elif filter_option_1 == 'Financial Data':
             query = "SELECT * FROM financialdata WHERE companyid = :company_id AND years = :filter_option_2"
         filtered_data = g.conn.execute(text(query), {'company_id': company_id, 'filter_option_2': filter_option_2}).fetchall()
@@ -290,31 +296,41 @@ def compare_data():
     return render_template('comparison.html', data_company_1=data_company_1, data_company_2=data_company_2, filter_option_1=filter_option_1, filter_option_2=filter_option_2)
 
 def fetch_filtered_data(company_id, filter_option_1, filter_option_2):
-    if filter_option_1 == 'Gender':
-        query = """
-            SELECT e.*, d.departmentname, d.stateid, d.cityname
-            FROM employee e 
-            Join department d
-            on e.departmentid = d.departmentid
-            WHERE (e.companyid = :company_id AND gender = :filter_option_2)"""
-    elif filter_option_1 == 'Positions':
-        query = """
-            SELECT e.*, d.departmentname, d.stateid, d.cityname
-            FROM employee e 
-            Join department d
-            on e.departmentid = d.departmentid
-            WHERE (e.companyid = :company_id AND currentposition = :filter_option_2)"""
-    elif filter_option_1 == 'Departments':
-        query = """
-            SELECT e.*, d.departmentname, d.stateid, d.cityname
-            FROM employee e 
-            Join department d
-            on e.departmentid = d.departmentid
-            WHERE (e.companyid = :company_id AND currentposition = :filter_option_2)"""
-    elif filter_option_1 == 'Financial Data':
-        query = "SELECT * FROM financialdata WHERE companyid = :company_id AND years = :filter_option_2"
-    results = g.conn.execute(text(query), {'company_id': company_id, 'filter_option_2': filter_option_2}).fetchall()
-    return results
+        if filter_option_1 == 'Gender':
+            query = """SELECT e.*, d.departmentname, d.stateid, d.cityname
+                FROM employee e 
+                Join department d
+                on e.departmentid = d.departmentid
+                WHERE e.companyid = :company_id AND gender = :filter_option_2"""
+        elif filter_option_1 == 'Positions':
+            query = """SELECT e.*, d.departmentname, d.stateid, d.cityname
+                FROM employee e
+                Join department d 
+                on e.departmentid = d.departmentid
+                WHERE e.companyid = :company_id AND currentposition = :filter_option_2"""
+        elif filter_option_1 == 'Departments':
+            query = """SELECT e.*, d.departmentname, d.stateid, d.cityname
+                FROM employee e
+                JOIN department d
+                ON e.departmentid = d.departmentid
+                WHERE e.companyid = :company_id AND d.departmentname = :filter_option_2"""
+        elif  filter_option_1 == 'Year':
+            query = """SELECT e.*, d.departmentname, d.stateid, d.cityname
+                FROM employee e
+                JOIN department d
+                ON e.departmentid = d.departmentid
+                WHERE e.companyid = :company_id AND years = :filter_option_2"""
+        elif  filter_option_1 == 'State':
+            query = """SELECT e.*, d.departmentname, d.stateid, d.cityname
+                FROM employee e
+                JOIN department d
+                ON e.departmentid = d.departmentid
+                WHERE e.companyid = :company_id AND d.stateid = :filter_option_2"""
+        elif filter_option_1 == 'Financial Data':
+            query = "SELECT * FROM financialdata WHERE companyid = :company_id AND years = :filter_option_2"
+    
+        results = g.conn.execute(text(query), {'company_id': company_id, 'filter_option_2': filter_option_2}).fetchall()
+        return results
 
 def get_user_data(user_id, compare_option):
     if compare_option == 'salary':
