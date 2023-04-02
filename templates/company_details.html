@@ -54,8 +54,7 @@
 <input type="hidden" id="departments-data" value="{{ departments|tojson }}">
 <script>
   document.getElementById("filter-option-1").addEventListener("change", function() {
-    var departmentsData = JSON.parse(document.getElementById("departments-data").value);
-    var filterOption1 = this.value;
+    
     var filterOption2 = document.getElementById("filter-option-2");
     
     // Remove existing options in filter-option-2
@@ -67,12 +66,5 @@
       filterOption2.innerHTML = "<option value='Software Developer'>Software Developer</option><option value='Data Analyst'>Data Analyst</option><option value='Project Manager'>Project Manager</option><option value='Junior Software Engineer'>Junior Software Engineer</option><option value='Senior Software Engineer'>Senior Software Engineer</option>";
     }else if (filterOption1 === "Financial Data") {
       filterOption2.innerHTML = "<option value='2018'>2018</option><option value='2019'>2019</option><option value='2020'>2020</option><option value='2021'>2021</option><option value='2022'>2022</option>";
-    }else if (filterOption1 === "Departments") {
-      for (var i = 0; i < departmentsData.length; i++) {
-        var option = document.createElement("option");
-        option.value = departmentsData[i].name;
-        option.text = departmentsData[i].name;
-        filterOption2.add(option);
-      }
     }
   });
