@@ -371,10 +371,11 @@ def review_data():
             # Generate unique review id
             while True:
                 reviewid = "REV" + "{:03d}".format(random.randint(0, 999))
-                result = g.conn.execute("SELECT reviewid FROM review WHERE reviewid = :reviewid", {'reviewid': reviewid}).fetchone()
-                if not result:
+                result = g.conn.execute(text("SELECT COUNT(*) FROM review WHERE reviewid = :reviewid"), {'reviewid': reviewid}).fetchone()
+                if result[0] == 0:
                     # review id is unique, break out of loop
                     break
+
             companynamequery = """
                 select companyname 
                 from company
