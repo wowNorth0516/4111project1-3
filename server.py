@@ -409,19 +409,12 @@ def review_data():
             g.conn.execute(text(query), {'reviewid': reviewid, 'companyname': companyname, 'rating': rating, 'add_review': add_review})
             g.conn.commit()
             #update staff table
+            userid = session['username']
             current_year = datetime.datetime.now().year
             query ="""
                 INSERT INTO staff (userid, employeeid, companyid, reviewid,years) VALUES (:userid, :employeeid, :company_id, :reviewid, :years)
             """
-            userid = session['username']
-            employeeid_query = """
-                select employeeid
-                from staff
-                where userid = :userid
-            """
-            employeeid = g.conn.execute(text(employeeid_query), {'userid': userid}).fetchall()[0]
-
-            g.conn.execute(text(query), {'userid': userid, 'employeeid': employeeid, 
+            g.conn.execute(text(query), {'userid': userid, 'employeeid': result1[0], 
                                          'company_id':company_id,
                                          'reviewid': reviewid, 'years': current_year})
             g.conn.commit()
