@@ -261,10 +261,14 @@ def filter_data():
         cursor = g.conn.execute(text(select_query_1))
         companies = [{"id": c.companyid, "name": c.companyname} for c in cursor.fetchall()]
         cursor.close()
+        select_query_2 = "SELECT DISTINCT d.departmentid, d.departmentname FROM department d JOIN employee e ON d.departmentid = e.departmentid WHERE e.companyid = :company_id"
+        cursor = g.conn.execute(text(select_query_2), {'company_id': company_id})
+        departments = [{"id": d.departmentid, "name": d.departmentname} for d in cursor.fetchall()]
+        cursor.close()
         g.conn.close()
         return render_template('filtered_data.html', filtered_data=filtered_data, 
                                filter_option_1=filter_option_1, filter_option_2=filter_option_2, 
-                               company_id=company_id, companies=companies)
+                               company_id=company_id, companies=companies, departments = departments)
     else:
         return redirect(url_for('company_details', company_id=company_id))
 
@@ -306,12 +310,7 @@ def fetch_filtered_data(company_id, filter_option_1, filter_option_2):
             on e.departmentid = d.departmentid
             WHERE (e.companyid = :company_id AND currentposition = :filter_option_2)"""
     elif filter_option_1 == 'Financial Data':
-        query = """
-            SELECT e.*, d.departmentname, d.stateid, d.cityname
-            FROM employee e 
-            Join department d
-            on e.departmentid = d.departmentid
-            WHERE (e.companyid = :company_id AND currentposition = :filter_option_2)"""
+        query = "SELECT * FROM financialdata WHERE companyid = :company_id AND years = :filter_option_2"
     results = g.conn.execute(text(query), {'company_id': company_id, 'filter_option_2': filter_option_2}).fetchall()
     return results
 
