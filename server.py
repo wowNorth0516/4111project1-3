@@ -24,6 +24,7 @@ import pandas as pd
 from markupsafe import escape
 import random
 from collections import defaultdict
+import datetime
 
 tmpl_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'templates')
 app = Flask(__name__, template_folder=tmpl_dir)
@@ -396,16 +397,37 @@ def review_data():
                     break
 
             companynamequery = """
-                select companyname 
+                select companyname,companyid
                 from company
                 where companyid = :company_id
                 """
             companyname = g.conn.execute(text(companynamequery), {'company_id': company_id}).fetchone()[0]
+            #update review table
             query ="""
                 INSERT INTO review (reviewid, companyname, rating, content) VALUES (:reviewid, :companyname, :rating, :add_review)
             """
             g.conn.execute(text(query), {'reviewid': reviewid, 'companyname': companyname, 'rating': rating, 'add_review': add_review})
             g.conn.commit()
+            #update staff table
+            current_year = datetime.datetime.now().year
+            query ="""
+                INSERT INTO staff (userid, employeeid, companyid, reviewid,years) VALUES (:userid, :employeeid, :company_id, :reviewid, :years)
+            """
+            userid = session['username']
+            employeeid_query = """
+                select employeeid
+                from employee
+                join staff
+                on staff.employeeid = employee.employeeid
+                where staff.userid = :userid
+            """
+            employeeid = g.conn.execute(text(employeeid_query), {'userid': userid}).fetchall()[0]
+
+            g.conn.execute(text(query), {'userid': userid, 'employeeid': employeeid, 
+                                         'company_id':company_id,
+                                         'reviewid': reviewid, 'years': current_year})
+            g.conn.commit()
+            #update added review to review table
             query = """
                 SELECT r.*
                 FROM review r
