@@ -363,17 +363,27 @@ def review_data():
             from staff 
             where userid = :username
         """
-        employeeid = g.conn.execute(text(employeeidquery), {'username': session["username"]}).fetchall()[0][0]
-        
-        if employeeid:
-            reviewid = "REV" + "{:03d}".format(random.randint(0, 999))
+        employeeid = g.conn.execute(text(employeeidquery), {'username': session["username"]}).fetchone()
+
+        if employeeid is not None:
+            employeeid = employeeid[0]
+
+            # Generate unique review id
+            while True:
+                reviewid = "REV" + "{:03d}".format(random.randint(0, 999))
+                result = g.conn.execute("SELECT reviewid FROM review WHERE reviewid = :reviewid", {'reviewid': reviewid}).fetchone()
+                if not result:
+                    # review id is unique, break out of loop
+                    break
             companynamequery = """
                 select companyname 
                 from company
                 where companyid = :company_id
                 """
-            companyname = g.conn.execute(text(companynamequery), {'company_id': company_id}).fetchall()[0][0]
-            query ="""INSERT INTO review (reviewid, companyname, rating, content) VALUES (:reviewid, :companyname, :rating, :add_review)"""
+            companyname = g.conn.execute(text(companynamequery), {'company_id': company_id}).fetchone()[0]
+            query ="""
+                INSERT INTO review (reviewid, companyname, rating, content) VALUES (:reviewid, :companyname, :rating, :add_review)
+            """
             g.conn.execute(text(query), {'reviewid': reviewid, 'companyname': companyname, 'rating': rating, 'add_review': add_review})
             query = """
                 SELECT r.*
