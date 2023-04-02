@@ -209,7 +209,18 @@ def company_data(company_id):
     """
     result = g.conn.execute(text(query), {'company_id': company_id})
     data = result.fetchall()
+    result.close()
+
+    # Fetch the list of departments
+    query2 = """
+    SELECT DISTINCT d.departmentname
+    FROM department d
+    JOIN employee e ON d.departmentid = e.departmentid
+    WHERE e.companyid = :company_id
+    """
+    result = g.conn.execute(text(query2), {'company_id': company_id})
     departments = [{"name": row.departmentname} for row in result.fetchall()]
+    # Close the database connection
     result.close()
 
     # Pass the data and departments to the template for rendering
