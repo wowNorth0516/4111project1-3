@@ -169,7 +169,6 @@ def signup_jobseeker():
         user_exist_query = "SELECT * FROM Users WHERE UserID = :username"
         cursor = g.conn.execute(text(user_exist_query), {'username': username})
         user_exist = cursor.fetchone()
-        cursor.close()
         if user_exist is not None:
             error_msg = "Username already exists, please log in or choose a different username."
             return render_template('login.html', error_msg=error_msg)
