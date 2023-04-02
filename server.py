@@ -142,9 +142,17 @@ def signup_employee():
                 g.conn.execute(text(insert_query),{'username': username,'password': password})
                 g.conn.commit()
                  # Insert to staff table
+                companyid_query = """
+                    select companyid
+                    from employee
+                    where employeeid = :employeeid
+                """
+                cursor = g.conn.execute(text(companyid_query), {'EmployeeID':EmployeeID})
+                companyid = cursor.fetchone()
+                cursor.close()
                 insert_query = "INSERT INTO Staff (UserID, EmployeeID) \
-                                VALUES (:username, :EmployeeID,:companyid,)"
-                g.conn.execute(text(insert_query), {'username': username,'EmployeeID':EmployeeID})
+                                VALUES (:username, :EmployeeID,:companyid)"
+                g.conn.execute(text(insert_query), {'username': username,'EmployeeID':EmployeeID, 'companyid':companyid})
                 g.conn.commit()
                 return redirect(url_for('do_login'),code=307, method='POST')
             else:
