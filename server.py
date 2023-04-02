@@ -197,7 +197,7 @@ def search_results():
 def company_data(company_id):
     # Fetch all the related data from the database using SQL JOIN statements
     query = """
-       SELECT e.*, distinct d.departmentname, d.stateid, d.cityname, f.annualrevenue, f.marketcapitalization 
+       SELECT e.*, d.departmentname, d.stateid, d.cityname, f.annualrevenue, f.marketcapitalization 
         FROM employee e
         JOIN financialdata f
         ON e.companyid = f.companyid and e.years = f.years
