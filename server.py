@@ -411,8 +411,10 @@ def review_data():
             #update staff table
             userid = session['username']
             current_year = datetime.datetime.now().year
-            query ="""
-                INSERT INTO staff (userid, employeeid, companyid, reviewid,years) VALUES (:userid, :employeeid, :company_id, :reviewid, :years)
+            query = """
+                INSERT INTO staff (reviewid, years)
+                VALUES (:reviewid, :years)
+                WHERE employeeid = :employeeid AND userid = :userid
             """
             g.conn.execute(text(query), {'userid': userid, 'employeeid': result1[0], 
                                          'company_id':company_id,
