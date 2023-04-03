@@ -178,33 +178,33 @@ def signup_jobseeker():
             Gender = escape(request.form['Gender'])
             DesiredPosition = escape(request.form['DesiredPosition'])
             DesiredSalary = int(request.form['DesiredSalary'])
-            if Age is not int:
-                error_msg ="Check your enter of Age"
-                return render_template('signup.html', error_msg=error_msg)
-            elif Gender.capitalize() not in ('Female','Male'):
-                error_msg ="Check your enter of Gender"
-                return render_template('signup.html', error_msg=error_msg)
-            elif DesiredPosition is not str:
-                error_msg ="Check your enter of Desired Position"
-                return render_template('signup.html', error_msg=error_msg)
-            elif DesiredSalary is not int:
-                error_msg ="Check your enter of Desired Salary"
-                return render_template('signup.html', error_msg=error_msg)
-            else:
+            # if Age is not int:
+            #     error_msg ="Check your enter of Age"
+            #     return render_template('signup.html', error_msg=error_msg)
+            # elif Gender.capitalize() not in ('Female','Male'):
+            #     error_msg ="Check your enter of Gender"
+            #     return render_template('signup.html', error_msg=error_msg)
+            # elif DesiredPosition is not str:
+            #     error_msg ="Check your enter of Desired Position"
+            #     return render_template('signup.html', error_msg=error_msg)
+            # elif DesiredSalary is not int:
+            #     error_msg ="Check your enter of Desired Salary"
+            #     return render_template('signup.html', error_msg=error_msg)
+            # else:
                 # Generate random jobseeker ID
-                JobSeekerID = 'JS' + str(random.randint(10000, 99999))
-                # Insert to user table
-                insert_query = "INSERT INTO Users (UserID, UserPSW) \
-                                VALUES (:username, :password)"
-                g.conn.execute(text(insert_query),{'username': username,'password': password})
-                g.conn.commit()
-                # Insert to jobseeker table
-                insert_query = "INSERT INTO JobSeeker (UserID, JobSeekerID, Age, gender, DesiredPosition, DesiredSalary) \
-                                VALUES (:username, :JobSeekerID, :Age, :Gender, :DesiredPosition, :DesiredSalary)"
-                g.conn.execute(text(insert_query), {'username':username, 'JobSeekerID':JobSeekerID, 'Age':Age, 'Gender':Gender, 
-                                'DesiredPosition':DesiredPosition, 'DesiredSalary':DesiredSalary})
-                g.conn.commit()
-                return redirect(url_for('index'),code=302)   
+            JobSeekerID = 'JS' + str(random.randint(10000, 99999))
+            # Insert to user table
+            insert_query = "INSERT INTO Users (UserID, UserPSW) \
+                            VALUES (:username, :password)"
+            g.conn.execute(text(insert_query),{'username': username,'password': password})
+            g.conn.commit()
+            # Insert to jobseeker table
+            insert_query = "INSERT INTO JobSeeker (UserID, JobSeekerID, Age, gender, DesiredPosition, DesiredSalary) \
+                            VALUES (:username, :JobSeekerID, :Age, :Gender, :DesiredPosition, :DesiredSalary)"
+            g.conn.execute(text(insert_query), {'username':username, 'JobSeekerID':JobSeekerID, 'Age':Age, 'Gender':Gender, 
+                            'DesiredPosition':DesiredPosition, 'DesiredSalary':DesiredSalary})
+            g.conn.commit()
+            return redirect(url_for('index'),code=302)   
     else:
         return render_template('signup.html')
 
