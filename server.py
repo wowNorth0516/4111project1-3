@@ -155,7 +155,7 @@ def signup_employee():
                                 VALUES (:username, :EmployeeID,:companyid)"
                 g.conn.execute(text(insert_query), {'username': username,'EmployeeID':EmployeeID, 'companyid':companyid[0]})
                 g.conn.commit()
-                return redirect(url_for('index'),code=307)
+                return redirect(url_for('index'),code=302)
             else:
                 error_msg = "Invalid employee ID, please check and try again."
                 return render_template('signup_employee.html', error_msg=error_msg)
@@ -195,7 +195,7 @@ def signup_jobseeker():
                 g.conn.execute(text(insert_query), {'username':username, 'JobSeekerID':JobSeekerID, 'Age':Age, 'Gender':Gender, 
                                 'DesiredPosition':DesiredPosition, 'DesiredSalary':DesiredSalary})
                 g.conn.commit()
-                return redirect(url_for('index'),code=307)   
+                return redirect(url_for('index'),code=302)   
     else:
         return render_template('signup.html')
 
