@@ -13,8 +13,8 @@
 	7.	 Data comparing feature allowing users to choose data from one company to compare with another.
 	▪	Description of two interesting web pages:
 	•	Company Details Web Page
-		This web page displays all the employees information for the interested company selected by the user, including their departments 
-		and locations. This part is interesting because it requires joins of all tables that contain the employee-related data. 
+		This web page displays all the employees information for the interested company selected by the user, including their departments and locations. 
+		This part is interesting because it requires joins of all tables that contain the employee-related data. 
 		The page is also used for filtering company data based on user-selected criteria. 
 		It involves interesting database operations because it requires generating dynamic SQL queries based on the selected companies and filter options. 
 		The inputs on the page are used to identify the appropriate SQL query to return the desired filtered data. 
@@ -30,7 +30,8 @@
 		3. Update ‘review’ table and ‘staff’ table with the new review information. 
 		This operation involves an INSERT statement with generated review ID, company name, rating and review content.
 		For displaying reviews, a JOIN operation is performed between the 'review' and 'company' tables to fetch all the reviews related to a specific company. 
-		This operation requires a SELECT query with a JOIN clause based on the company name and a WHERE clause that considers the company ID. The results are then displayed in a table format on the page.
+		This operation requires a SELECT query with a JOIN clause based on the company name and a WHERE clause that considers the company ID. 
+		The results are then displayed in a table format on the page.
 
 
 
