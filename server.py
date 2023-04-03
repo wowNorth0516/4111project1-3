@@ -176,7 +176,7 @@ def signup_jobseeker():
         else:
             Age = int(request.form['Age'])
             Gender = escape(request.form['Gender'])
-            DesiredPosition = int(request.form['DesiredPosition'])
+            DesiredPosition = escape(request.form['DesiredPosition'])
             DesiredSalary = int(request.form['DesiredSalary'])
             if Age is not int:
                 error_msg ="Check your enter of Age"
