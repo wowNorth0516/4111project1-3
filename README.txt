@@ -1,9 +1,9 @@
 	▪	The PostgreSQL account: 
-The PostgreSQL account name for our database on our server is yy3262, which is Yijie Yang’s UNI.
+	The PostgreSQL account name for our database on our server is yy3262, which is Yijie Yang’s UNI.
 	▪	The URL of our web application:
-http://34.23.72.248:8111
+	http://34.23.72.248:8111
 	▪	Description of implemented functions:
-The following parts of the original proposal in Part 1 were successfully implemented:
+	The following parts of the original proposal in Part 1 were successfully implemented:
 	1.	 User authentication system with login and sign-up pages, allowing users to create accounts as employees or job seekers.
 	2.	 Employee ID validation for employee users.
 	3.	 Storage capabilities for user data, including age, gender, desired position, and salary for job seekers.
