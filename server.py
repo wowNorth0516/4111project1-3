@@ -174,10 +174,10 @@ def signup_jobseeker():
             error_msg = "Username already exists, please log in or choose a different username."
             return render_template('login.html', error_msg=error_msg)
         else:
-            Age = escape(request.form['Age'])
+            Age = int(request.form['Age'])
             Gender = escape(request.form['Gender'])
-            DesiredPosition = escape(request.form['DesiredPosition'])
-            DesiredSalary = escape(request.form['DesiredSalary'])
+            DesiredPosition = int(request.form['DesiredPosition'])
+            DesiredSalary = int(request.form['DesiredSalary'])
             if Age is not int:
                 error_msg ="Check your enter of Age"
                 return render_template('signup.html', error_msg=error_msg)
