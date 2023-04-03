@@ -405,7 +405,7 @@ def review_data():
             yearsquery = """
                 select years
                 from employee
-                where companyid = :company_id,employeeid = :employeeid 
+                where companyid = :company_id AND employeeid = :employeeid 
                 """
             years = g.conn.execute(text(yearsquery), {'company_id': company_id,'employeeid':result1[0]}).fetchone()[0]
             #update review table
