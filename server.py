@@ -178,7 +178,7 @@ def signup_jobseeker():
             Gender = escape(request.form['Gender'])
             DesiredPosition = escape(request.form['DesiredPosition'])
             DesiredSalary = escape(request.form['DesiredSalary'])
-            if (Age is not int) or (Gender != 'Female' or Gender != 'Male') or (DesiredPosition is not str) or (DesiredSalary is not int):
+            if (Age is not int) or (Gender.capitalize() not in ('Female','Male')) or (DesiredPosition is not str) or (DesiredSalary is not int):
                 error_msg = "Please check your entry: Age must be integer, Gender must be Female or Male, Desired Position must be charactor, Desired Salary must be integer"
                 return render_template('signup.html', error_msg=error_msg)
             else:
