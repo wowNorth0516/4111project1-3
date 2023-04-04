@@ -25,6 +25,10 @@ from markupsafe import escape
 import random
 from collections import defaultdict
 import datetime
+import plotly.graph_objects as go
+import plotly.express as px
+from plotly.utils import PlotlyJSONEncoder
+import json
 
 tmpl_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'templates')
 app = Flask(__name__, template_folder=tmpl_dir)
@@ -223,6 +227,41 @@ def search_results():
 
     return render_template('search_results.html', query=query, companies=companies)
 
+def calculate_averages(data):
+    years = sorted(list(set([row.years for row in data])))
+    annual_revenue = []
+    market_capitalization = []
+    age = []
+    salary = []
+    holidays = []
+    workhrsperw = []
+    satisfaction = []
+
+    for year in years:
+        year_data = [row for row in data if row.years == year]
+        count = len(year_data)
+
+        annual_revenue.append(sum([row.annualrevenue for row in year_data]) / count)
+        market_capitalization.append(sum([row.marketcapitalization for row in year_data]) / count)
+        age.append(sum([row.age for row in year_data]) / count)
+        salary.append(sum([row.salary for row in year_data]) / count)
+        holidays.append(sum([row.holidays for row in year_data]) / count)
+        workhrsperw.append(sum([row.workhrsperw for row in year_data]) / count)
+        satisfaction.append(sum([row.satisfaction for row in year_data]) / count)
+
+    averages = {
+        'years': years,
+        'annual_revenue': annual_revenue,
+        'market_capitalization': market_capitalization,
+        'age': age,
+        'salary': salary,
+        'holidays': holidays,
+        'workhrsperw': workhrsperw,
+        'satisfaction': satisfaction
+    }
+
+    return averages
+
 @app.route('/company/<company_id>')
 def company_data(company_id):
     # Fetch all the related data from the database using SQL JOIN statements
@@ -253,8 +292,9 @@ def company_data(company_id):
     # Close the database connection
     result.close()
 
+    averages = calculate_averages(data)
     # Pass the data and departments to the template for rendering
-    return render_template('company_details.html', data=data, departments=departments)
+    return render_template('company_details.html', data=data, departments=departments, averages_json=json.dumps(averages))
 
 # data = [{"Employee ID": c.employeeid, "Employee Name":c.employeename, "Gender":c.gender,
 #              "City":c.city,"State":c.state, "Department Name":c.departmentname,
@@ -362,15 +402,6 @@ def fetch_filtered_data(company_id, filter_option_1, filter_option_2):
         results = g.conn.execute(text(query), {'company_id': company_id, 'filter_option_2': filter_option_2}).fetchall()
         return results
 
-def get_user_data(user_id, compare_option):
-    if compare_option == 'salary':
-        query = "SELECT salary FROM employee WHERE userid = %s"
-    elif compare_option == 'age':
-        query = "SELECT age FROM employee WHERE userid = %s"
-    # Add more compare options here
-
-    g.conn.execute(query, (user_id,))
-    return g.conn.fetchone()
 
 @app.route('/review', methods=['GET', 'POST'])
 def review_data():
