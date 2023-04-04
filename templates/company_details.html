@@ -56,7 +56,6 @@
     <input type="submit" value="Apply" />
   </form>
   
-  <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
   <script>
     document.getElementById("filter-option-1").addEventListener("change", function() {
     var filterOption1 = this.value;
@@ -75,39 +74,9 @@
       filterOption2.innerHTML = "<<option value=2020>2020</option><option value=2021>2021</option><option value='2022'>2022</option>";
     }
   });
-    
-    // Pass the averages dictionary to JavaScript
-    var averages = JSON.parse('{{ averages_json }}');
-    // Prepare the data for each chart
-    var trace1 = {
-    x: averages.years,
-    y: averages.annual_revenue,
-    mode: 'lines+markers',
-    name: 'Annual Revenue'
-  };
-
-    var trace2 = {
-    x: averages.years,
-    y: averages.market_capitalization,
-    mode: 'lines+markers',
-    name: 'Market Capitalization'
-  };
-
-  // ... (Add more traces for the other attributes)
-
-  // Combine traces into an array
-  var chartData = [trace1, trace2]; // Add the other traces here
-
-  // Define the layout for the chart
-  var layout = {
-    title: 'Company Data'
-  };
-
-  // Render the chart
-  Plotly.newPlot('chart', chartData, layout);
 </script>
 
-<div id="chart"></div>
+
 
 
 

@@ -25,10 +25,6 @@ from markupsafe import escape
 import random
 from collections import defaultdict
 import datetime
-import plotly.graph_objects as go
-import plotly.express as px
-from plotly.utils import PlotlyJSONEncoder
-import json
 
 tmpl_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'templates')
 app = Flask(__name__, template_folder=tmpl_dir)
@@ -227,40 +223,6 @@ def search_results():
 
     return render_template('search_results.html', query=query, companies=companies)
 
-def calculate_averages(data):
-    years = sorted(list(set([row.years for row in data])))
-    annual_revenue = []
-    market_capitalization = []
-    age = []
-    salary = []
-    holidays = []
-    workhrsperw = []
-    satisfaction = []
-
-    for year in years:
-        year_data = [row for row in data if row.years == year]
-        count = len(year_data)
-
-        annual_revenue.append(sum([row.annualrevenue for row in year_data]) / count)
-        market_capitalization.append(sum([row.marketcapitalization for row in year_data]) / count)
-        age.append(sum([row.age for row in year_data]) / count)
-        salary.append(sum([row.salary for row in year_data]) / count)
-        holidays.append(sum([row.holidays for row in year_data]) / count)
-        workhrsperw.append(sum([row.workhrsperw for row in year_data]) / count)
-        satisfaction.append(sum([row.satisfaction for row in year_data]) / count)
-
-    averages = {
-        'years': years,
-        'annual_revenue': annual_revenue,
-        'market_capitalization': market_capitalization,
-        'age': age,
-        'salary': salary,
-        'holidays': holidays,
-        'workhrsperw': workhrsperw,
-        'satisfaction': satisfaction
-    }
-
-    return averages
 
 @app.route('/company/<company_id>')
 def company_data(company_id):
@@ -292,9 +254,8 @@ def company_data(company_id):
     # Close the database connection
     result.close()
 
-    averages = calculate_averages(data)
     # Pass the data and departments to the template for rendering
-    return render_template('company_details.html', data=data, departments=departments, averages_json=json.dumps(averages))
+    return render_template('company_details.html', data=data, departments=departments)
 
 # data = [{"Employee ID": c.employeeid, "Employee Name":c.employeename, "Gender":c.gender,
 #              "City":c.city,"State":c.state, "Department Name":c.departmentname,
